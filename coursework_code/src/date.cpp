@@ -1,4 +1,4 @@
-#include "date.h"
+#include "Date.h"
 #include <ctime>   // Для time и localtime
 #include <iomanip> // Для setw и setfill
 

@@ -36,7 +36,9 @@ private:
 
     // Вспомогательные методы
     void validateYear(const int &_year);
+
     void validateMonth(const int &_month);
+
     void validateDay(const int &_day);
 };
 
