@@ -1,5 +1,6 @@
 #include <CommonHeaders.h>
 #include <Person.h>
+#include <date.h>
 
 using namespace std;
 
@@ -11,7 +12,8 @@ class Secretary;
 class SecurityGuard;
 class SalaryDatabase;
 
-struct PersonalData // персональная информация
+// персональная информация
+struct PersonalData
 {
     string firstName;
     string lastName;
@@ -19,86 +21,8 @@ struct PersonalData // персональная информация
     double salary;
 };
 
-struct Date // для хранения даты
-{
-    int day, month, year, isLeapyYear, daysInMonth;
-
-    Date()
-    {
-        time_t t = time(nullptr);
-        tm *now = localtime(&t);
-
-        isLeapyYear = 0;
-        daysInMonth = 31;
-
-        this->day = now->tm_mday;
-        this->month = now->tm_mon + 1;
-        this->year = now->tm_year + 1900;
-    };
-
-    Date(int day, int month, int year)
-    {
-        isLeapyYear = 0;
-        daysInMonth = 31;
-
-        setYear(year);
-        setMonth(month);
-        setDay(day);
-    }
-
-    void setYear(const int &_year)
-    {
-        if (_year < 1970 || _year > 2025)
-            throw invalid_argument("Неверно задан год \n");
-        if (_year % 4 == 0 && _year % 100 != 0 || _year % 400 == 0 && _year % 100 == 0)
-            isLeapyYear = 1;
-        year = _year;
-    }
-
-    void setMonth(const int &_month)
-    {
-        if (_month > 12 || _month < 1)
-            throw invalid_argument("Неверно задан месяц");
-        switch (_month)
-        {
-        case 2:
-            daysInMonth = isLeapyYear ? 29 : 28;
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            daysInMonth = 30;
-            break;
-        default:
-            daysInMonth = 31;
-            break;
-        }
-        month = _month;
-    }
-
-    void setDay(const int &_day)
-    {
-        if (_day < 1 || _day > daysInMonth)
-            throw invalid_argument("Неверно задан день");
-        day = _day;
-    }
-
-    string toStringDate() const
-    {
-        ostringstream oss;
-        oss << setw(2) << setfill('0') << day << "." << setw(2) << setfill('0') << month << "."
-            << year;
-        return oss.str();
-    }
-
-    bool operator==(const Date &other) const
-    {
-        return day == other.day && month == other.month && year == other.year;
-    }
-};
-
-struct Meeting // информация о встрече
+// информация о встрече
+struct Meeting
 {
     vector<Person *> employees;
     string place;
@@ -108,13 +32,15 @@ struct Meeting // информация о встрече
         : employees(emp), place(p), date(d) {}
 };
 
+// информация о поездке
 struct Trip
 {
     Date dateStart;     // Дата начала поездки
     string destination; // Место назначения
 };
 
-enum class Position // должность
+// должность
+enum class Position
 {
     Driver,        // водитель
     Secretary,     // секретарь
@@ -123,7 +49,8 @@ enum class Position // должность
     Director       // директор
 };
 
-enum class Department // названия отделов
+// названия отделов
+enum class Department
 {
     Transportation, // отдел транспорта     Driver
     Management,     // управление           Secretary
@@ -133,6 +60,7 @@ enum class Department // названия отделов
     Bonuses         // бюджет на премии
 };
 
+// спецсредства
 enum class Equipment
 {
     Baton,      // дубинка
@@ -1805,9 +1733,9 @@ public:
         int randomDays = rand() % 365;
 
         tm tmDate = {};
-        tmDate.tm_year = today.year - 1900;
-        tmDate.tm_mon = today.month - 1;
-        tmDate.tm_mday = today.day;
+        tmDate.tm_year = today.getYear() - 1900;
+        tmDate.tm_mon = today.getMonth() - 1;
+        tmDate.tm_mday = today.getDay();
 
         time_t currentTime = mktime(&tmDate);
 
