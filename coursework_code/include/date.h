@@ -3,6 +3,7 @@
 
 #include <string>
 
+// Класс для работы с датой
 class Date
 {
 public:

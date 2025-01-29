@@ -1,4 +1,15 @@
 #include <CommonHeaders.h>
+
+#include <structs/meeting.h>
+#include <structs/personal_data.h>
+#include <structs/trip.h>
+
+#include <enums/position.h>
+#include <enums/department.h>
+#include <enums/equipment.h>
+#include <enums/driver_license.h>
+#include <enums/vehicle_type.h>
+
 #include <Person.h>
 #include <date.h>
 
@@ -11,86 +22,6 @@ class Accountant;
 class Secretary;
 class SecurityGuard;
 class SalaryDatabase;
-
-// персональная информация
-struct PersonalData
-{
-    string firstName;
-    string lastName;
-    string middleName;
-    double salary;
-};
-
-// информация о встрече
-struct Meeting
-{
-    vector<Person *> employees;
-    string place;
-    Date date;
-
-    Meeting(const vector<Person *> &emp, const string &p, const Date &d)
-        : employees(emp), place(p), date(d) {}
-};
-
-// информация о поездке
-struct Trip
-{
-    Date dateStart;     // Дата начала поездки
-    string destination; // Место назначения
-};
-
-// должность
-enum class Position
-{
-    Driver,        // водитель
-    Secretary,     // секретарь
-    SecurityGuard, // охранник
-    Accountant,    // бухгалтер
-    Director       // директор
-};
-
-// названия отделов
-enum class Department
-{
-    Transportation, // отдел транспорта     Driver
-    Management,     // управление           Secretary
-    Security,       // отдел безопасности   SecurityGuard
-    Finance,        // финансовый отдел     Accountant
-    Executive,      // исполнительный отдел Director
-    Bonuses         // бюджет на премии
-};
-
-// спецсредства
-enum class Equipment
-{
-    Baton,      // дубинка
-    Taser,      // электрошокер
-    Handcuffs,  // наручники
-    Flashlight, // фонарик
-    PepperSpray // перечный спрей
-};
-
-// Перечисление типов водительских прав
-enum class DriverLicense
-{
-    CATEGORY_A,
-    CATEGORY_B,
-    CATEGORY_C,
-    CATEGORY_D,
-    CATEGORY_E,
-    COUNT
-};
-
-// Перечисление типов транспорта
-enum class VehicleType
-{
-    MOTORCYCLE,
-    CAR,
-    TRUCK,
-    BUS,
-    VAN,
-    COUNT
-};
 
 // функция для получения строкового представления должности
 string toStringEnum(Position position)
@@ -153,7 +84,7 @@ string toStringEnum(VehicleType vehicle)
 }
 
 // Функция для получения строкового представления отдела
-string toStringEnum(Department department) // Функция для получения строкового представления отдела
+string toStringEnum(Department department)
 {
     switch (department)
     {
