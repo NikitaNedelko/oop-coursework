@@ -1,10 +1,5 @@
-#include <algorithm>
-#include <iostream>
-#include <iomanip>
-#include <conio.h>
-#include <string>
-#include <vector>
-#include <map>
+#include <CommonHeaders.h>
+#include <Person.h>
 
 using namespace std;
 
@@ -15,22 +10,6 @@ class Accountant;
 class Secretary;
 class SecurityGuard;
 class SalaryDatabase;
-
-class Person // базовый класс Человек
-{
-public:
-    // свойства
-    virtual void setFirstName(const string &firstName) = 0;   // Изменить имя
-    virtual string getFirstName() const = 0;                  // Получить имя
-    virtual void setLastName(const string &lastName) = 0;     // Изменить отчество
-    virtual string getLastName() const = 0;                   // Получить отчество
-    virtual void setMiddleName(const string &middleName) = 0; // Изменить фамилию
-    virtual string getMiddleName() const = 0;                 // Получить фамилию
-    virtual void setSalary(const double salary) = 0;          // Изменить ЗП
-    virtual double getSalary() const = 0;                     // Получить ЗП
-
-    virtual ~Person() = default;
-};
 
 struct PersonalData // персональная информация
 {
@@ -108,8 +87,7 @@ struct Date // для хранения даты
     string toStringDate() const
     {
         ostringstream oss;
-        oss << setw(2) << setfill('0') << day << "."
-            << setw(2) << setfill('0') << month << "."
+        oss << setw(2) << setfill('0') << day << "." << setw(2) << setfill('0') << month << "."
             << year;
         return oss.str();
     }
@@ -126,7 +104,8 @@ struct Meeting // информация о встрече
     string place;
     Date date;
 
-    Meeting(const vector<Person *> &emp, const string &p, const Date &d) : employees(emp), place(p), date(d) {}
+    Meeting(const vector<Person *> &emp, const string &p, const Date &d)
+        : employees(emp), place(p), date(d) {}
 };
 
 struct Trip
@@ -185,7 +164,8 @@ enum class VehicleType
     COUNT
 };
 
-string toStringEnum(Position position) // функция для получения строкового представления должности
+// функция для получения строкового представления должности
+string toStringEnum(Position position)
 {
     switch (position)
     {
@@ -203,7 +183,9 @@ string toStringEnum(Position position) // функция для получени
         return "Неизвестная должность"; // На всякий случай
     }
 }
-string toStringEnum(Equipment equipment) // Функция для получения строкового представления оборудования
+
+// Функция для получения строкового представления оборудования
+string toStringEnum(Equipment equipment)
 {
     switch (equipment)
     {
@@ -221,7 +203,9 @@ string toStringEnum(Equipment equipment) // Функция для получен
         return "Неизвестно";
     }
 }
-string toStringEnum(VehicleType vehicle) // Функция для конвертации типа транспорта в строку
+
+// Функция для конвертации типа транспорта в строку
+string toStringEnum(VehicleType vehicle)
 {
     switch (vehicle)
     {
@@ -239,6 +223,8 @@ string toStringEnum(VehicleType vehicle) // Функция для конверт
         return "Неизвестный тип транспорта";
     }
 }
+
+// Функция для получения строкового представления отдела
 string toStringEnum(Department department) // Функция для получения строкового представления отдела
 {
     switch (department)
@@ -259,7 +245,9 @@ string toStringEnum(Department department) // Функция для получе
         return "Неизвестный отдел";
     }
 }
-string toStringEnum(DriverLicense license) // функция для получения строкового представления категории водительской лицензии
+
+// функция для получения строкового представления категории водительской лицензии
+string toStringEnum(DriverLicense license)
 {
     switch (license)
     {
@@ -304,12 +292,15 @@ public:
         salaryCoefficients[Position::Accountant] = {2.0};
     }
 
-    // void setMinimumWage(double newMinWage);                                                                    // изменения минимальной зарплаты
-    // void updateSalaries(const map<Person *, Position> &employees);                                   // обновление ЗП каждого сотрудника с учетом прошлой ставки
-    void setCoefficient(const Position &position, const double &newCoefficient, Director &director); // назначения коэффициента зарплаты
-    double getMinimalSalary(Position position) const;                                                // получения итоговой зарплаты для должности
-    void printSalaryInfo() const;                                                                    // вывод информации по каждой должности
-    map<Position, double> &getSalaryCoefficients();                                                  // возвращает список коэффициентов по каждой должности
+    // void setMinimumWage(double newMinWage); // изменения минимальной зарплаты void
+    // updateSalaries(const map<Person *, Position> &employees); // обновление ЗП каждого сотрудника
+    // с учетом прошлой ставки
+    void setCoefficient(const Position &position, const double &newCoefficient,
+                        Director &director);          // назначения коэффициента зарплаты
+    double getMinimalSalary(Position position) const; // получения итоговой зарплаты для должности
+    void printSalaryInfo() const;                     // вывод информации по каждой должности
+    map<Position, double> &
+    getSalaryCoefficients(); // возвращает список коэффициентов по каждой должности
 };
 
 // void SalaryDatabase::setMinimumWage(double newMinWage)
@@ -333,10 +324,7 @@ void SalaryDatabase::printSalaryInfo() const
     }
 }
 
-map<Position, double> &SalaryDatabase::getSalaryCoefficients()
-{
-    return salaryCoefficients;
-}
+map<Position, double> &SalaryDatabase::getSalaryCoefficients() { return salaryCoefficients; }
 
 // класс Директор, наследуемый от Person
 class Director : public Person
@@ -363,7 +351,8 @@ public:
         approveBudget(Department::Executive, 100000 - getSalary());
     }
 
-    Director(const PersonalData &personalData, SalaryDatabase &salaryDatabase) : salaryDatabase(salaryDatabase)
+    Director(const PersonalData &personalData, SalaryDatabase &salaryDatabase)
+        : salaryDatabase(salaryDatabase)
     {
         setFirstName(personalData.firstName);
         setMiddleName(personalData.middleName);
@@ -378,45 +367,21 @@ public:
     }
 
     // Геттеры и сеттеры для полей Director
-    void setFirstName(const string &firstName) override
-    {
-        personalData.firstName = firstName;
-    }
+    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
 
-    string getFirstName() const override
-    {
-        return personalData.firstName;
-    }
+    string getFirstName() const override { return personalData.firstName; }
 
-    void setLastName(const string &lastName) override
-    {
-        personalData.lastName = lastName;
-    }
+    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
 
-    string getLastName() const override
-    {
-        return personalData.lastName;
-    }
+    string getLastName() const override { return personalData.lastName; }
 
-    void setMiddleName(const string &middleName) override
-    {
-        personalData.middleName = middleName;
-    }
+    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
 
-    string getMiddleName() const override
-    {
-        return personalData.middleName;
-    }
+    string getMiddleName() const override { return personalData.middleName; }
 
-    void setSalary(const double salary) override
-    {
-        personalData.salary = salary;
-    }
+    void setSalary(const double salary) override { personalData.salary = salary; }
 
-    double getSalary() const override
-    {
-        return personalData.salary;
-    }
+    double getSalary() const override { return personalData.salary; }
 
     map<Person *, Position> getEmployees() const;                    // список сотрудников в подчинении -
     void approveBudget(const Department &department, double budget); // задать бюджет на отдел -
@@ -429,20 +394,14 @@ public:
     Person *findSecretary() const;                                   // находим секретаря среди работников -
 };
 
-map<Person *, Position> Director::getEmployees() const
-{
-    return employees;
-}
+map<Person *, Position> Director::getEmployees() const { return employees; }
 
 void Director::approveBudget(const Department &department, double budget)
 {
     departmentBudgets[department] = budget;
 }
 
-map<Department, double> &Director::getApprovedBudget()
-{
-    return departmentBudgets;
-}
+map<Department, double> &Director::getApprovedBudget() { return departmentBudgets; }
 
 void Director::hireEmployee(Person *employee, const Position &position)
 {
@@ -484,33 +443,30 @@ void Director::terminateEmployee(Person *employee)
     // Возвращаем зарплату в бюджет отдела
     departmentBudgets[Department(int(position))] += salary;
 
-    cout << "Сотрудник " << employee->getMiddleName() << " уволен. Бюджет отдела " << toStringEnum(Department(int(position))) << " восстановлен на " << salary << "\n";
+    cout << "Сотрудник " << employee->getMiddleName() << " уволен. Бюджет отдела "
+         << toStringEnum(Department(int(position))) << " восстановлен на " << salary << "\n";
 
     // Удаляем сотрудника из списка
     employees.erase(it);
     delete employee;
 }
 
-SalaryDatabase &Director::getSalaryDataBase()
-{
-    return salaryDatabase;
-}
+SalaryDatabase &Director::getSalaryDataBase() { return salaryDatabase; }
 
 void Director::displayInfo()
 {
-    cout << left << setw(3) << "№ |"
-         << setw(10) << "Должность|"
-         << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+         << "    Фамилия    |      Имя      |   Отчество    |"
          << "  Зарплата   |" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
 
-    cout << left << setw(2) << 0
-         << setw(10) << "|" + toStringEnum(Position::Director)
-         << setw(16) << "|" + getMiddleName()
-         << setw(16) << "|" + getFirstName()
-         << setw(16) << "|" + getLastName()
-         << "|" << fixed << setprecision(2) << getSalary() << " руб.|" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
+    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Director) << setw(16)
+         << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
+         << "|" + getLastName() << "|" << fixed << setprecision(2) << getSalary() << " руб.|"
+         << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
 
     cout << "\nБюджет отделов:\n";
     for (auto &department : getApprovedBudget())
@@ -537,7 +493,8 @@ Person *Director::findSecretary() const
     return nullptr;                // секретарь не найден
 }
 
-void SalaryDatabase::setCoefficient(const Position &position, const double &newCoefficient, Director &director)
+void SalaryDatabase::setCoefficient(const Position &position, const double &newCoefficient,
+                                    Director &director)
 {
     if (newCoefficient > 5)
         throw invalid_argument("Коэффициент больше 5 нельзя поставить");
@@ -565,7 +522,9 @@ void SalaryDatabase::setCoefficient(const Position &position, const double &newC
             double salaryDifference = newSalary - currentSalary;
 
             if (departmentBudget - salaryDifference < 0)
-                throw invalid_argument("Недостаточно бюджета для обновления зарплаты сотрудника " + employee->getMiddleName() + ' ' + employee->getFirstName() + ' ' + employee->getLastName() + '\n');
+                throw invalid_argument("Недостаточно бюджета для обновления зарплаты сотрудника " +
+                                       employee->getMiddleName() + ' ' + employee->getFirstName() +
+                                       ' ' + employee->getLastName() + '\n');
 
             // Обновляем зарплату и бюджет
             employee->setSalary(newSalary);
@@ -585,7 +544,8 @@ private:
     map<Person *, double> employeesBonuses; // Хранение премиальных по каждому сотруднику
 
 public:
-    Accountant(const PersonalData &personalData, SalaryDatabase &salaryDatabase) : salaryDatabase(salaryDatabase)
+    Accountant(const PersonalData &personalData, SalaryDatabase &salaryDatabase)
+        : salaryDatabase(salaryDatabase)
     {
         setFirstName(personalData.firstName);
         setMiddleName(personalData.middleName);
@@ -594,55 +554,33 @@ public:
     }
 
     // Геттеры и сеттеры для полей Accountant
-    void setFirstName(const string &firstName) override
-    {
-        personalData.firstName = firstName;
-    }
+    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
 
-    string getFirstName() const override
-    {
-        return personalData.firstName;
-    }
+    string getFirstName() const override { return personalData.firstName; }
 
-    void setLastName(const string &lastName) override
-    {
-        personalData.lastName = lastName;
-    }
+    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
 
-    string getLastName() const override
-    {
-        return personalData.lastName;
-    }
+    string getLastName() const override { return personalData.lastName; }
 
-    void setMiddleName(const string &middleName) override
-    {
-        personalData.middleName = middleName;
-    }
+    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
 
-    string getMiddleName() const override
-    {
-        return personalData.middleName;
-    }
+    string getMiddleName() const override { return personalData.middleName; }
 
-    void setSalary(double salary) override
-    {
-        personalData.salary = salary;
-    }
+    void setSalary(double salary) override { personalData.salary = salary; }
 
-    double getSalary() const override
-    {
-        return personalData.salary;
-    }
+    double getSalary() const override { return personalData.salary; }
 
-    void applyBonuses(Person *employee, const double bonus, Director &director); // изменение премии сотрудников
-    void setRate(Person *employee, double rate, Director &director);             // изменение ставки сотрудников
-    void updateEmployeesRate(Director &director);                                // добавление ставок сотрудников в массив ставок
-    double getEmployeeRate(Person *employee) const;                              // получение ставки сотрудника
-    double getEmployeeBonus(Person *employee) const;                             // получение премии сотрудника
-    SalaryDatabase &getSalaryDataBase();                                         // выводим базу данных зарплат
-    Position getEmployeeType(Person *employee);                                  // определяем что за работник относительно Person *
-    map<Person *, double> getEmployeesRates() const;                             // все ставки по каждому сотруднику
-    void displayInfo();                                                          // вся информация о классе
+    void applyBonuses(Person *employee, const double bonus,
+                      Director &director); // изменение премии сотрудников
+    void setRate(Person *employee, double rate,
+                 Director &director);                // изменение ставки сотрудников
+    void updateEmployeesRate(Director &director);    // добавление ставок сотрудников в массив ставок
+    double getEmployeeRate(Person *employee) const;  // получение ставки сотрудника
+    double getEmployeeBonus(Person *employee) const; // получение премии сотрудника
+    SalaryDatabase &getSalaryDataBase();             // выводим базу данных зарплат
+    Position getEmployeeType(Person *employee);      // определяем что за работник относительно Person *
+    map<Person *, double> getEmployeesRates() const; // все ставки по каждому сотруднику
+    void displayInfo();                              // вся информация о классе
 };
 
 void Accountant::applyBonuses(Person *employee, double bonus, Director &director)
@@ -652,14 +590,18 @@ void Accountant::applyBonuses(Person *employee, double bonus, Director &director
     if (bonus > employee->getSalary())
         throw invalid_argument("Премия не может быть больше оклада");
 
-    double currentBudgetBonuses = director.getApprovedBudget()[Department::Bonuses] + getEmployeeBonus(employee);
+    double currentBudgetBonuses =
+        director.getApprovedBudget()[Department::Bonuses] + getEmployeeBonus(employee);
 
     if (bonus > currentBudgetBonuses)
         throw invalid_argument("Недостаточно бюджета для выдачи премий!");
 
-    director.approveBudget(Department::Bonuses, currentBudgetBonuses - bonus); // изменение бюджета бонусов
+    director.approveBudget(Department::Bonuses,
+                           currentBudgetBonuses - bonus); // изменение бюджета бонусов
     employeesBonuses[employee] = bonus;
-    cout << "Изменена премия для " << employee->getMiddleName() << ' ' << employee->getFirstName() << " " << employee->getLastName() << " на " << fixed << setprecision(2) << employeesBonuses[employee] << " руб." << endl;
+    cout << "Изменена премия для " << employee->getMiddleName() << ' ' << employee->getFirstName()
+         << " " << employee->getLastName() << " на " << fixed << setprecision(2)
+         << employeesBonuses[employee] << " руб." << endl;
 }
 
 void Accountant::updateEmployeesRate(Director &director)
@@ -669,7 +611,8 @@ void Accountant::updateEmployeesRate(Director &director)
         // Проверяем, есть ли уже ставка для сотрудника
         if (employeesRate.find(employee) != employeesRate.end())
             continue;
-        setRate(employee, employee->getSalary() / salaryDatabase.getMinimalSalary(position), director);
+        setRate(employee, employee->getSalary() / salaryDatabase.getMinimalSalary(position),
+                director);
     }
 }
 
@@ -695,7 +638,8 @@ void Accountant::setRate(Person *employee, double newRate, Director &director)
         double newSalary = baseSalary * newRate;
         double salaryDifference = newSalary - oldSalary;
         if (salaryDifference > 0 && currentBudget < salaryDifference)
-            throw invalid_argument("Недостаточно бюджета для увеличения ставки. " + to_string(salaryDifference - currentBudget) + " руб.\n");
+            throw invalid_argument("Недостаточно бюджета для увеличения ставки. " +
+                                   to_string(salaryDifference - currentBudget) + " руб.\n");
         // Обновление ставки и бюджета отдела
         employeesRate[employee] = newRate;
         director.getApprovedBudget()[Department(int(position))] -= salaryDifference;
@@ -712,10 +656,7 @@ void Accountant::setRate(Person *employee, double newRate, Director &director)
     return;
 }
 
-double Accountant::getEmployeeRate(Person *employee) const
-{
-    return employeesRate.at(employee);
-}
+double Accountant::getEmployeeRate(Person *employee) const { return employeesRate.at(employee); }
 
 double Accountant::getEmployeeBonus(Person *employee) const
 {
@@ -727,39 +668,29 @@ double Accountant::getEmployeeBonus(Person *employee) const
     return 0; // Возвращаем 0, если ключ не найден
 }
 
-map<Person *, double> Accountant::getEmployeesRates() const
-{
-    return employeesRate;
-}
+map<Person *, double> Accountant::getEmployeesRates() const { return employeesRate; }
 
-SalaryDatabase &Accountant::getSalaryDataBase()
-{
-    return salaryDatabase;
-}
+SalaryDatabase &Accountant::getSalaryDataBase() { return salaryDatabase; }
 
 void Accountant::displayInfo()
 { // Заголовок таблицы
-    cout << left << setw(3) << "№ |"
-         << setw(10) << "Должность|"
-         << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+         << "    Фамилия    |      Имя      |   Отчество    |"
          << "   Зарплата   |" << setw(6) << "Ставка|" << "    Премия    |" << endl;
     cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
-         << '+' << string(6, '-') << '+' << string(14, '-') << '+' << endl;
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+         << string(6, '-') << '+' << string(14, '-') << '+' << endl;
 
     // Данные о бухгалтере
-    cout << left << setw(2) << 0
-         << setw(10) << "|" + toStringEnum(Position::Accountant)
-         << setw(16) << "|" + getMiddleName()
-         << setw(16) << "|" + getFirstName()
-         << setw(16) << "|" + getLastName()
-         << "|" << setw(9) << fixed << setprecision(2) << getSalary() << " руб.|"
-         << setw(6) << fixed << setprecision(2) << getEmployeeRate(this) << "|"
+    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Accountant) << setw(16)
+         << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
+         << "|" + getLastName() << "|" << setw(9) << fixed << setprecision(2) << getSalary()
+         << " руб.|" << setw(6) << fixed << setprecision(2) << getEmployeeRate(this) << "|"
          << setw(9) << fixed << setprecision(2) << getEmployeeBonus(this) << " руб.|" << endl;
 
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-')
-         << '+' << string(15, '-') << '+' << string(15, '-') << '+'
-         << string(14, '-') << '+' << string(6, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+         << string(6, '-') << '+' << string(14, '-') << '+' << endl;
 }
 
 // класс Secretary, наследуемый от Person
@@ -779,53 +710,31 @@ public:
     }
 
     // Геттеры и сеттеры для полей Human
-    void setFirstName(const string &firstName) override
-    {
-        personalData.firstName = firstName;
-    }
+    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
 
-    string getFirstName() const override
-    {
-        return personalData.firstName;
-    }
+    string getFirstName() const override { return personalData.firstName; }
 
-    void setLastName(const string &lastName) override
-    {
-        personalData.lastName = lastName;
-    }
+    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
 
-    string getLastName() const override
-    {
-        return personalData.lastName;
-    }
+    string getLastName() const override { return personalData.lastName; }
 
-    void setMiddleName(const string &middleName) override
-    {
-        personalData.middleName = middleName;
-    }
+    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
 
-    string getMiddleName() const override
-    {
-        return personalData.middleName;
-    }
+    string getMiddleName() const override { return personalData.middleName; }
 
-    void setSalary(double salary) override
-    {
-        personalData.salary = salary;
-    }
+    void setSalary(double salary) override { personalData.salary = salary; }
 
-    double getSalary() const override
-    {
-        return personalData.salary;
-    }
+    double getSalary() const override { return personalData.salary; }
 
     // методы планирования встреч и управления данными о сотрудниках
-    void scheduleMeeting(vector<Person *> employees, const string &place, const Date &date); /// создание встречи
+    void scheduleMeeting(vector<Person *> employees, const string &place,
+                         const Date &date); /// создание встречи
     vector<Meeting> &listScheduledMeetings();
-    void displayMeetings() const;                                                    // вывод всех встреч
-    void displayEmployeeListInTable(const map<Person *, Position> &employees) const; // вывод в таблицу
-    void participantsOfMeeting(Meeting meeting) const;                               // вывод информации одной встречи
-    void displayInfo() const;                                                        // вся информация о классе
+    void displayMeetings() const; // вывод всех встреч
+    void displayEmployeeListInTable(
+        const map<Person *, Position> &employees) const; // вывод в таблицу
+    void participantsOfMeeting(Meeting meeting) const;   // вывод информации одной встречи
+    void displayInfo() const;                            // вся информация о классе
 };
 
 void Secretary::displayEmployeeListInTable(const map<Person *, Position> &employees) const
@@ -844,13 +753,14 @@ void Secretary::displayEmployeeListInTable(const map<Person *, Position> &employ
                 i == 4 && pair.second == Position::SecurityGuard)
             {
                 cout << fixed << setprecision(2);
-                cout << left << setw(2) << employeeNumber++
-                     << setw(10) << "|" + positionName
-                     << setw(16) << "|" + employee->getMiddleName()
-                     << setw(16) << "|" + employee->getFirstName()
-                     << setw(16) << "|" + employee->getLastName()
-                     << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary() << " руб.|" << endl;
-                cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+                cout << left << setw(2) << employeeNumber++ << setw(10) << "|" + positionName
+                     << setw(16) << "|" + employee->getMiddleName() << setw(16)
+                     << "|" + employee->getFirstName() << setw(16) << "|" + employee->getLastName()
+                     << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary()
+                     << " руб.|" << endl;
+                cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                     << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+                     << endl;
             }
         }
     }
@@ -871,10 +781,12 @@ void Secretary::scheduleMeeting(vector<Person *> employees, const string &place,
                 throw("Нельзя запланировать больше 5 встреч за день\n");
             for (const auto &employee : employees)
             {
-                if (find(meeting.employees.begin(), meeting.employees.end(), employee) != meeting.employees.end())
+                if (find(meeting.employees.begin(), meeting.employees.end(), employee) !=
+                    meeting.employees.end())
                 {
                     system("cls");
-                    cout << "Сотрудник " << employee->getMiddleName() << " " << employee->getFirstName() << " уже занят на встрече в это время.\n";
+                    cout << "Сотрудник " << employee->getMiddleName() << " "
+                         << employee->getFirstName() << " уже занят на встрече в это время.\n";
                     system("pause");
                     return;
                 }
@@ -887,10 +799,7 @@ void Secretary::scheduleMeeting(vector<Person *> employees, const string &place,
     cout << "Встреча успешно запланирована.\n";
 }
 
-vector<Meeting> &Secretary::listScheduledMeetings()
-{
-    return meetings;
-}
+vector<Meeting> &Secretary::listScheduledMeetings() { return meetings; }
 
 void Secretary::displayMeetings() const
 {
@@ -898,7 +807,8 @@ void Secretary::displayMeetings() const
     int index = 0;
     for (const auto &meeting : meetings)
     {
-        cout << ++index << ") Место: " << meeting.place << ", Дата: " << meeting.date.toStringDate() << "\n";
+        cout << ++index << ") Место: " << meeting.place << ", Дата: " << meeting.date.toStringDate()
+             << "\n";
         // cout << "Сотрудники: ";
         // for (const auto &emp : meeting.employees)
         // {
@@ -913,27 +823,26 @@ void Secretary::participantsOfMeeting(Meeting meeting) const
     cout << "Сотрудники: \n";
     for (const auto &emp : meeting.employees)
     {
-        cout << emp->getMiddleName() << " " << emp->getFirstName() << " " << emp->getLastName() << endl;
+        cout << emp->getMiddleName() << " " << emp->getFirstName() << " " << emp->getLastName()
+             << endl;
     }
     cout << "\n";
 }
 
 void Secretary::displayInfo() const
 {
-
-    cout << left << setw(3) << "№ |"
-         << setw(10) << "Должность|"
-         << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+         << "    Фамилия    |      Имя      |   Отчество    |"
          << "   Зарплата   |" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
-    cout << left << setw(2) << 0
-         << setw(10) << "|" + toStringEnum(Position::Secretary)
-         << setw(16) << "|" + getMiddleName()
-         << setw(16) << "|" + getFirstName()
-         << setw(16) << "|" + getLastName()
-         << "|" << setw(9) << fixed << setprecision(2) << getSalary() << " руб.|" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Secretary) << setw(16)
+         << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
+         << "|" + getLastName() << "|" << setw(9) << fixed << setprecision(2) << getSalary()
+         << " руб.|" << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 }
 
 // класс SecurityGuard, наследуемый от Person
@@ -948,10 +857,12 @@ private:
     // Список всех объектов
     vector<string> departments = {"Склад", "Производство", "Администрация", "Лаборатория"};
     // Список возможных статусов
-    vector<string> statuses = {"Всё в порядке", "Нужна проверка", "Нарушение безопасности", "Неизвестный статус"};
+    vector<string> statuses = {"Всё в порядке", "Нужна проверка", "Нарушение безопасности",
+                               "Неизвестный статус"};
 
 public:
-    SecurityGuard(const PersonalData &personalData, const Equipment &equipment) : specialEquipment(equipment)
+    SecurityGuard(const PersonalData &personalData, const Equipment &equipment)
+        : specialEquipment(equipment)
     {
         setFirstName(personalData.firstName);
         setMiddleName(personalData.middleName);
@@ -963,49 +874,26 @@ public:
         }
     }
     // Геттеры и сеттеры для полей Human
-    void setFirstName(const string &firstName) override
-    {
-        personalData.firstName = firstName;
-    }
+    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
 
-    string getFirstName() const override
-    {
-        return personalData.firstName;
-    }
+    string getFirstName() const override { return personalData.firstName; }
 
-    void setLastName(const string &lastName) override
-    {
-        personalData.lastName = lastName;
-    }
+    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
 
-    string getLastName() const override
-    {
-        return personalData.lastName;
-    }
+    string getLastName() const override { return personalData.lastName; }
 
-    void setMiddleName(const string &middleName) override
-    {
-        personalData.middleName = middleName;
-    }
+    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
 
-    string getMiddleName() const override
-    {
-        return personalData.middleName;
-    }
+    string getMiddleName() const override { return personalData.middleName; }
 
-    void setSalary(double salary) override
-    {
-        personalData.salary = salary;
-    }
+    void setSalary(double salary) override { personalData.salary = salary; }
 
-    double getSalary() const override
-    {
-        return personalData.salary;
-    }
+    double getSalary() const override { return personalData.salary; }
 
     // методы проверки безопасности и составления отчетов об инцидентах
-    void setSecurityStatus(string &department, string &status); // Метод для изменения статуса безопасности
-    void generateIncidentReport() const;                        // Метод для генерации отчета о безопасности
+    void setSecurityStatus(string &department,
+                           string &status); // Метод для изменения статуса безопасности
+    void generateIncidentReport() const;    // Метод для генерации отчета о безопасности
     void setSpecialEquipment(const Equipment equipment);
     Equipment getSpecialEquipment() const;
     vector<string> allDepartments(); // все объекты
@@ -1013,14 +901,8 @@ public:
     void displayInfo() const;        // вся информация о классе
 };
 
-vector<string> SecurityGuard::allDepartments()
-{
-    return departments;
-}
-vector<string> SecurityGuard::allStatuses()
-{
-    return statuses;
-}
+vector<string> SecurityGuard::allDepartments() { return departments; }
+vector<string> SecurityGuard::allStatuses() { return statuses; }
 void SecurityGuard::setSecurityStatus(string &department, string &status)
 {
     locations[department] = status;
@@ -1036,29 +918,22 @@ void SecurityGuard::generateIncidentReport() const
         cout << ++i << ") " << location.first << "\t" << location.second << endl;
     }
 }
-void SecurityGuard::setSpecialEquipment(const Equipment equipment)
-{
-    specialEquipment = equipment;
-}
-Equipment SecurityGuard::getSpecialEquipment() const
-{
-    return specialEquipment;
-}
+void SecurityGuard::setSpecialEquipment(const Equipment equipment) { specialEquipment = equipment; }
+Equipment SecurityGuard::getSpecialEquipment() const { return specialEquipment; }
 void SecurityGuard::displayInfo() const
 {
-    cout << left << setw(3) << "№ |"
-         << setw(10) << "Должность|"
-         << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+         << "    Фамилия    |      Имя      |   Отчество    |"
          << "   Зарплата   |" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
-    cout << left << setw(2) << 0
-         << setw(10) << "|" + toStringEnum(Position::SecurityGuard)
-         << setw(16) << "|" + getMiddleName()
-         << setw(16) << "|" + getFirstName()
-         << setw(16) << "|" + getLastName()
-         << "|" << setw(9) << fixed << setprecision(2) << getSalary() << " руб.|" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::SecurityGuard)
+         << setw(16) << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
+         << "|" + getLastName() << "|" << setw(9) << fixed << setprecision(2) << getSalary()
+         << " руб.|" << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
     cout << "Спец средство: " << toStringEnum(getSpecialEquipment());
 }
@@ -1075,7 +950,8 @@ private:
     vector<string> cities;
 
 public:
-    Driver(const PersonalData &personalData, DriverLicense licenseCategories, VehicleType vehicles)
+    Driver(const PersonalData &personalData, DriverLicense licenseCategories,
+           VehicleType vehicles)
     {
         setFirstName(personalData.firstName);
         setMiddleName(personalData.middleName);
@@ -1083,93 +959,62 @@ public:
         addLicenseCategory(licenseCategories);
         addVehicle(vehicles);
         destination = "Не задано";
-        cities = {"Москва", "Санкт-Петербург", "Нижний Новгород", "Казань", "Челябинск", "Омск", "Ростов-на-Дону", "Уфа", "Не задано"};
+        cities = {"Москва", "Санкт-Петербург",
+                  "Нижний Новгород", "Казань",
+                  "Челябинск", "Омск",
+                  "Ростов-на-Дону", "Уфа",
+                  "Не задано"};
     }
     // Геттеры и сеттеры для полей Human
-    void setFirstName(const string &firstName) override
-    {
-        personalData.firstName = firstName;
-    }
+    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
 
-    string getFirstName() const override
-    {
-        return personalData.firstName;
-    }
+    string getFirstName() const override { return personalData.firstName; }
 
-    void setLastName(const string &lastName) override
-    {
-        personalData.lastName = lastName;
-    }
+    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
 
-    string getLastName() const override
-    {
-        return personalData.lastName;
-    }
+    string getLastName() const override { return personalData.lastName; }
 
-    void setMiddleName(const string &middleName) override
-    {
-        personalData.middleName = middleName;
-    }
+    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
 
-    string getMiddleName() const override
-    {
-        return personalData.middleName;
-    }
+    string getMiddleName() const override { return personalData.middleName; }
 
-    void setSalary(double salary) override
-    {
-        personalData.salary = salary;
-    }
+    void setSalary(double salary) override { personalData.salary = salary; }
 
-    double getSalary() const override
-    {
-        return personalData.salary;
-    }
+    double getSalary() const override { return personalData.salary; }
 
-    void changeDestination(const string &newDestination);   // новое место назначение
-    const vector<string> getCities();                       // список городов (доступных мест назначений)
-    void addLicenseCategory(const DriverLicense &category); // Метод для добавления категории водительских прав
-    vector<DriverLicense> &getLicenseCategories();          // Метод для получения категории водительских прав
-    void addVehicle(const VehicleType &vehicle);            // Метод для добавления транспортного средства
-    vector<VehicleType> &getVehicles();                     // Метод вывода всех транспортных средств
-    void displayInfo() const;                               // отображение всей информации класса
+    void changeDestination(const string &newDestination); // новое место назначение
+    const vector<string> getCities();                     // список городов (доступных мест назначений)
+    void addLicenseCategory(
+        const DriverLicense &category); // Метод для добавления категории водительских прав
+    vector<DriverLicense> &
+    getLicenseCategories();                      // Метод для получения категории водительских прав
+    void addVehicle(const VehicleType &vehicle); // Метод для добавления транспортного средства
+    vector<VehicleType> &getVehicles();          // Метод вывода всех транспортных средств
+    void displayInfo() const;                    // отображение всей информации класса
 };
 
 void Driver::addLicenseCategory(const DriverLicense &category)
 {
     licenseCategories.push_back(category);
 }
-void Driver::addVehicle(const VehicleType &vehicle)
-{
-    vehicles.push_back(vehicle);
-}
-void Driver::changeDestination(const string &newDestination)
-{
-    destination = newDestination;
-}
-vector<DriverLicense> &Driver::getLicenseCategories()
-{
-    return licenseCategories;
-}
-vector<VehicleType> &Driver::getVehicles()
-{
-    return vehicles;
-}
+void Driver::addVehicle(const VehicleType &vehicle) { vehicles.push_back(vehicle); }
+void Driver::changeDestination(const string &newDestination) { destination = newDestination; }
+vector<DriverLicense> &Driver::getLicenseCategories() { return licenseCategories; }
+vector<VehicleType> &Driver::getVehicles() { return vehicles; }
 void Driver::displayInfo() const
 {
-    cout << left << setw(3) << "№ |"
-         << setw(10) << "Должность|"
-         << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+         << "    Фамилия    |      Имя      |   Отчество    |"
          << "   Зарплата   |" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
-    cout << left << setw(2) << 0
-         << setw(10) << "|" + toStringEnum(Position::Driver)
-         << setw(16) << "|" + getMiddleName()
-         << setw(16) << "|" + getFirstName()
-         << setw(16) << "|" + getLastName()
-         << "|" << setw(9) << fixed << setprecision(2) << getSalary() << " руб.|" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Driver) << setw(16)
+         << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
+         << "|" + getLastName() << "|" << setw(9) << fixed << setprecision(2) << getSalary()
+         << " руб.|" << endl;
+    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
     if (!licenseCategories.empty())
     {
@@ -1196,12 +1041,10 @@ void Driver::displayInfo() const
     cout << "Выехал в город - " << destination;
     cout << endl;
 }
-const vector<string> Driver::getCities()
-{
-    return cities;
-}
+const vector<string> Driver::getCities() { return cities; }
 
-Position Accountant::getEmployeeType(Person *employee) // определяем что за работник относительно Person *
+Position Accountant::getEmployeeType(
+    Person *employee) // определяем что за работник относительно Person *
 {
     if (dynamic_cast<Driver *>(employee))
         return Position::Driver;
@@ -1235,10 +1078,7 @@ public:
     string getName() const;
 };
 
-Director &Company::getDirector()
-{
-    return director;
-}
+Director &Company::getDirector() { return director; }
 
 void Company::displayInfo() const
 {
@@ -1246,14 +1086,8 @@ void Company::displayInfo() const
     cout << "Директор: " << director.getFirstName() << " " << director.getLastName() << endl;
     cout << "Зарплата: " << director.getSalary() << " руб." << endl;
 }
-void Company::setName(string name)
-{
-    this->name = name;
-}
-string Company::getName() const
-{
-    return name;
-}
+void Company::setName(string name) { this->name = name; }
+string Company::getName() const { return name; }
 
 // ------------------------MENU------------------------
 
@@ -1282,7 +1116,9 @@ public:
         throw invalid_argument("Неизвестный тип работника");
     }
 
-    void displayAllEmployees(Director &director, vector<Person *> &employees) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП)
+    void displayAllEmployees(
+        Director &director,
+        vector<Person *> &employees) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП)
     {
         int employeeNumber = 1;
         for (int i = 0; i <= 4; ++i)
@@ -1298,19 +1134,22 @@ public:
                     i == 4 && pair.second == Position::SecurityGuard)
                 {
                     cout << fixed << setprecision(2);
-                    cout << left << setw(2) << employeeNumber++
-                         << setw(10) << "|" + positionName
-                         << setw(16) << "|" + employee->getMiddleName()
-                         << setw(16) << "|" + employee->getFirstName()
-                         << setw(16) << "|" + employee->getLastName()
-                         << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary() << " руб.|" << endl;
-                    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+                    cout << left << setw(2) << employeeNumber++ << setw(10) << "|" + positionName
+                         << setw(16) << "|" + employee->getMiddleName() << setw(16)
+                         << "|" + employee->getFirstName() << setw(16)
+                         << "|" + employee->getLastName() << "|" << setw(9) << fixed
+                         << setprecision(2) << employee->getSalary() << " руб.|" << endl;
+                    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
+                         << '+' << endl;
                     employees.push_back(employee);
                 }
             }
         }
     }
-    void displayAllEmployeesWithInt(Director &director, vector<int> &indexs) // вывод определенного сотрудника в таблицу (должность, ФИО, ЗП)
+    void displayAllEmployeesWithInt(
+        Director &director,
+        vector<int> &indexs) // вывод определенного сотрудника в таблицу (должность, ФИО, ЗП)
     {
         int employeeNumber = 1;
         for (int i = 0; i <= 4; ++i)
@@ -1331,39 +1170,40 @@ public:
                         continue;
                     }
                     cout << fixed << setprecision(2);
-                    cout << left << setw(2) << employeeNumber++
-                         << setw(10) << "|" + positionName
-                         << setw(16) << "|" + employee->getMiddleName()
-                         << setw(16) << "|" + employee->getFirstName()
-                         << setw(16) << "|" + employee->getLastName()
-                         << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary() << " руб.|" << endl;
-                    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+                    cout << left << setw(2) << employeeNumber++ << setw(10) << "|" + positionName
+                         << setw(16) << "|" + employee->getMiddleName() << setw(16)
+                         << "|" + employee->getFirstName() << setw(16)
+                         << "|" + employee->getLastName() << "|" << setw(9) << fixed
+                         << setprecision(2) << employee->getSalary() << " руб.|" << endl;
+                    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
+                         << '+' << endl;
                 }
             }
         }
     }
-    void displayAllEmployeesWithRatesAndBonuses(Director &director, Accountant &accountant) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП, ставка, премия)
+    void displayAllEmployeesWithRatesAndBonuses(
+        Director &director,
+        Accountant
+            &accountant) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП, ставка, премия)
     {
         clearConsole();
-        cout << left << setw(3) << "№ |"
-             << setw(10) << "Должность|"
-             << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+        cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+             << "    Фамилия    |      Имя      |   Отчество    |"
              << "   Зарплата   |" << setw(6) << "Ставка|" << setw(14) << "    Премии    |" << endl;
         cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
-             << '+' << string(6, '-') << '+' << string(14, '-') << '+' << endl;
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+             << string(6, '-') << '+' << string(14, '-') << '+' << endl;
         // Вывод информации о директоре
-        cout << left << setw(2) << 0
-             << setw(10) << "|" + toStringEnum(Position::Director)
-             << setw(16) << "|" + director.getMiddleName()
-             << setw(16) << "|" + director.getFirstName()
-             << setw(16) << "|" + director.getLastName()
-             << "|" << setw(9) << fixed << setprecision(2) << director.getSalary() << " руб.|"
-             << setw(6) << "1.00  |"
-             << setw(9) << fixed << setprecision(2) << accountant.getEmployeeBonus(&director) << " руб.|" << endl;
-        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-')
-             << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
-             << '+' << string(6, '-') << '+' << string(14, '-') << '+' << endl;
+        cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Director)
+             << setw(16) << "|" + director.getMiddleName() << setw(16)
+             << "|" + director.getFirstName() << setw(16) << "|" + director.getLastName() << "|"
+             << setw(9) << fixed << setprecision(2) << director.getSalary() << " руб.|" << setw(6)
+             << "1.00  |" << setw(9) << fixed << setprecision(2)
+             << accountant.getEmployeeBonus(&director) << " руб.|" << endl;
+        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+             << string(6, '-') << '+' << string(14, '-') << '+' << endl;
 
         // Переменная для нумерации сотрудников
         int employeeNumber = 1;
@@ -1382,24 +1222,27 @@ public:
                     i == 4 && pair.second == Position::SecurityGuard)
                 {
                     cout << fixed << setprecision(2);
-                    cout << left << setw(2) << employeeNumber++
-                         << setw(10) << "|" + positionName
-                         << setw(16) << "|" + employee->getMiddleName()
-                         << setw(16) << "|" + employee->getFirstName()
-                         << setw(16) << "|" + employee->getLastName()
-                         << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary() << " руб.|"
-                         << setw(6) << fixed << setprecision(2) << accountant.getEmployeeRate(employee) << "|"
-                         << setw(9) << fixed << setprecision(2) << accountant.getEmployeeBonus(employee) << " руб.|" << endl;
+                    cout << left << setw(2) << employeeNumber++ << setw(10) << "|" + positionName
+                         << setw(16) << "|" + employee->getMiddleName() << setw(16)
+                         << "|" + employee->getFirstName() << setw(16)
+                         << "|" + employee->getLastName() << "|" << setw(9) << fixed
+                         << setprecision(2) << employee->getSalary() << " руб.|" << setw(6) << fixed
+                         << setprecision(2) << accountant.getEmployeeRate(employee) << "|"
+                         << setw(9) << fixed << setprecision(2)
+                         << accountant.getEmployeeBonus(employee) << " руб.|" << endl;
 
                     // Разделитель для строк
-                    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-')
-                         << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
+                    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
                          << '+' << string(6, '-') << '+' << string(14, '-') << '+' << endl;
                 }
             }
         }
     }
-    void displayAllEmployeesWithRates(Director &director, Accountant &accountant, vector<Person *> &employees) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП, ставка)
+    void displayAllEmployeesWithRates(
+        Director &director, Accountant &accountant,
+        vector<Person *>
+            &employees) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП, ставка)
     {
         // Переменная для нумерации сотрудников
         int employeeNumber = 1;
@@ -1418,13 +1261,12 @@ public:
                     i == 4 && pair.second == Position::SecurityGuard)
                 {
                     cout << fixed << setprecision(2);
-                    cout << left << setw(2) << employeeNumber++
-                         << setw(10) << "|" + positionName
-                         << setw(16) << "|" + employee->getMiddleName()
-                         << setw(16) << "|" + employee->getFirstName()
-                         << setw(16) << "|" + employee->getLastName()
-                         << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary() << " руб.|"
-                         << setw(6) << fixed << setprecision(2) << accountant.getEmployeeRate(employee) << "|" << endl;
+                    cout << left << setw(2) << employeeNumber++ << setw(10) << "|" + positionName
+                         << setw(16) << "|" + employee->getMiddleName() << setw(16)
+                         << "|" + employee->getFirstName() << setw(16)
+                         << "|" + employee->getLastName() << "|" << setw(9) << fixed
+                         << setprecision(2) << employee->getSalary() << " руб.|" << setw(6) << fixed
+                         << setprecision(2) << accountant.getEmployeeRate(employee) << "|" << endl;
 
                     // Разделитель для строк
                     cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
@@ -1435,7 +1277,10 @@ public:
             }
         }
     }
-    void displayAllEmployeesWithBonuses(Director &director, Accountant &accountant, vector<Person *> &employees) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП, премия)
+    void displayAllEmployeesWithBonuses(
+        Director &director, Accountant &accountant,
+        vector<Person *>
+            &employees) // вывод всех сотрудников в таблицу (должность, ФИО, ЗП, премия)
     {
         // Переменная для нумерации сотрудников
         int employeeNumber = 1;
@@ -1454,13 +1299,13 @@ public:
                     i == 4 && pair.second == Position::SecurityGuard)
                 {
                     cout << fixed << setprecision(2);
-                    cout << left << setw(2) << employeeNumber++
-                         << setw(10) << "|" + positionName
-                         << setw(16) << "|" + employee->getMiddleName()
-                         << setw(16) << "|" + employee->getFirstName()
-                         << setw(16) << "|" + employee->getLastName()
-                         << "|" << setw(9) << fixed << setprecision(2) << employee->getSalary() << " руб."
-                         << "|" << setw(9) << fixed << setprecision(2) << accountant.getEmployeeBonus(employee) << " руб.|" << endl;
+                    cout << left << setw(2) << employeeNumber++ << setw(10) << "|" + positionName
+                         << setw(16) << "|" + employee->getMiddleName() << setw(16)
+                         << "|" + employee->getFirstName() << setw(16)
+                         << "|" + employee->getLastName() << "|" << setw(9) << fixed
+                         << setprecision(2) << employee->getSalary() << " руб."
+                         << "|" << setw(9) << fixed << setprecision(2)
+                         << accountant.getEmployeeBonus(employee) << " руб.|" << endl;
 
                     // Разделитель для строк
                     cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
@@ -1471,29 +1316,33 @@ public:
             }
         }
     }
-    void displayALLPositionsWithKoef(Accountant &accountant) // вывод всех должностей их коэффициент и зарплату
+    void displayALLPositionsWithKoef(
+        Accountant &accountant) // вывод всех должностей их коэффициент и зарплату
     {
-        SalaryDatabase &salaryDatabase = accountant.getSalaryDataBase(); // Получаем базу данных зарплат
+        SalaryDatabase &salaryDatabase =
+            accountant.getSalaryDataBase(); // Получаем базу данных зарплат
         // Заголовок таблицы
-        cout << left << setw(2) << "№ |"
-             << setw(10) << "Должность|"
-             << setw(11) << "Коэффициент|"
+        cout << left << setw(2) << "№ |" << setw(10) << "Должность|" << setw(11) << "Коэффициент|"
              << "   Зарплата   |" << endl;
-        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(11, '-') << '+' << string(14, '-') << '+' << endl;
+        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(11, '-') << '+'
+             << string(14, '-') << '+' << endl;
 
         // Вывод данных
-        const auto &coefficients = salaryDatabase.getSalaryCoefficients(); // Предполагается, что метод возвращает данные по должностям
+        const auto &coefficients =
+            salaryDatabase.getSalaryCoefficients(); // Предполагается, что метод возвращает данные
+                                                    // по должностям
 
         int i = 1;
         for (const auto &[position, coefficient] : coefficients)
         {
-            cout << left << setw(2) << i << "|"
-                 << setw(9) << toStringEnum(position) << "|"
-                 << setw(11) << fixed << setprecision(2) << coefficient << "|"
-                 << setw(9) << fixed << setprecision(2) << salaryDatabase.getMinimalSalary(position) << " руб.|" << endl;
+            cout << left << setw(2) << i << "|" << setw(9) << toStringEnum(position) << "|"
+                 << setw(11) << fixed << setprecision(2) << coefficient << "|" << setw(9) << fixed
+                 << setprecision(2) << salaryDatabase.getMinimalSalary(position) << " руб.|"
+                 << endl;
 
             // Линия-разделитель после каждой строки данных
-            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(11, '-') << '+' << string(14, '-') << '+' << endl;
+            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(11, '-') << '+'
+                 << string(14, '-') << '+' << endl;
             ++i;
         }
     }
@@ -1600,13 +1449,17 @@ public:
         person.setMiddleName(middleName);
         return 1;
     }
-    bool hireEmployeeMenu(Director &director) // меню нанять на работу от лица директора, с выбором должности нового рабочего, ввода ФИО  (проверка что бухгалтер и секретарь уже есть в компании и что бюджета отдела хватит на найм рабочего)
+    bool hireEmployeeMenu(
+        Director &director) // меню нанять на работу от лица директора, с выбором должности нового
+                            // рабочего, ввода ФИО  (проверка что бухгалтер и секретарь уже есть в
+                            // компании и что бюджета отдела хватит на найм рабочего)
     {
         clearConsole();
         Accountant *acc = dynamic_cast<Accountant *>(director.findAccountant());
         Secretary *sec = dynamic_cast<Secretary *>(director.findSecretary());
         // Список доступных должностей для найма
-        vector<Position> availablePositions = {Position::Driver, Position::Secretary, Position::SecurityGuard, Position::Accountant};
+        vector<Position> availablePositions = {Position::Driver, Position::Secretary,
+                                               Position::SecurityGuard, Position::Accountant};
 
         cout << "Выберите тип работника для найма:\n";
         for (size_t i = 0; i < availablePositions.size(); ++i)
@@ -1618,7 +1471,8 @@ public:
         Position selectedPosition = availablePositions[choice - 1];
 
         // Проверка на уникальные должности (бухгалтер и секретарь )
-        if ((acc != nullptr && selectedPosition == Position::Accountant) || (sec != nullptr && selectedPosition == Position::Secretary))
+        if ((acc != nullptr && selectedPosition == Position::Accountant) ||
+            (sec != nullptr && selectedPosition == Position::Secretary))
             throw invalid_argument("Такой работник уже нанят");
 
         // Создаем новый объект сотрудника в зависимости от выбранной позиции
@@ -1665,7 +1519,8 @@ public:
             return false;
         }
     }
-    bool terminateEmployeeMenu(Director &director) // меню выбора сотрудника на увольнение (ЗП сотрудника возвращается в бюджет отдела)
+    bool terminateEmployeeMenu(Director &director) // меню выбора сотрудника на увольнение (ЗП
+                                                   // сотрудника возвращается в бюджет отдела)
     {
         clearConsole();
 
@@ -1685,17 +1540,16 @@ public:
 
         vector<Person *> employeeList;
 
-        cout << left << setw(3) << "№ |"
-             << setw(10) << "Должность|"
-             << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+        cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+             << "    Фамилия    |      Имя      |   Отчество    |"
              << "  Зарплата   |" << endl;
-        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
+        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
 
         displayAllEmployees(director, employeeList);
 
         // Получаем выбор пользователя
-        cout
-            << "Введите номер сотрудника, которого хотите уволить: ";
+        cout << "Введите номер сотрудника, которого хотите уволить: ";
         int choice;
         if (!inputInt(choice, 1, employeeList.size()))
             return 0;
@@ -1716,7 +1570,9 @@ public:
         }
     }
 
-    bool createMeeting(Secretary &secretary, Director &director) //  создание встреч. Задается время, название, участники и место встречи
+    bool createMeeting(Secretary &secretary,
+                       Director &director) //  создание встреч. Задается время, название, участники
+                                           //  и место встречи
     {
         clearConsole();
         // Ввод названия комнаты
@@ -1767,21 +1623,24 @@ public:
                 system("pause");
                 break;
             }
-            cout << left << setw(3) << "№ |"
-                 << setw(10) << "Должность|"
-                 << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+            cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+                 << "    Фамилия    |      Имя      |   Отчество    |"
                  << "   Зарплата   |" << endl;
-            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                 << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+                 << endl;
 
-            if (find(selectedEmployeeNumbers.begin(), selectedEmployeeNumbers.end(), 0) == selectedEmployeeNumbers.end())
+            if (find(selectedEmployeeNumbers.begin(), selectedEmployeeNumbers.end(), 0) ==
+                selectedEmployeeNumbers.end())
             {
-                cout << left << setw(2) << 0
-                     << setw(10) << "|" + toStringEnum(Position::Director)
-                     << setw(16) << "|" + director.getMiddleName()
-                     << setw(16) << "|" + director.getFirstName()
-                     << setw(16) << "|" + director.getLastName()
-                     << "|" << setw(9) << fixed << setprecision(2) << director.getSalary() << " руб.|" << endl;
-                cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+                cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Director)
+                     << setw(16) << "|" + director.getMiddleName() << setw(16)
+                     << "|" + director.getFirstName() << setw(16) << "|" + director.getLastName()
+                     << "|" << setw(9) << fixed << setprecision(2) << director.getSalary()
+                     << " руб.|" << endl;
+                cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                     << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+                     << endl;
             }
 
             displayAllEmployeesWithInt(director, selectedEmployeeNumbers);
@@ -1792,7 +1651,8 @@ public:
                 break;
             ;
 
-            if (find(selectedEmployeeNumbers.begin(), selectedEmployeeNumbers.end(), choice) != selectedEmployeeNumbers.end())
+            if (find(selectedEmployeeNumbers.begin(), selectedEmployeeNumbers.end(), choice) !=
+                selectedEmployeeNumbers.end())
             {
                 continue;
             }
@@ -1892,19 +1752,27 @@ public:
     // Функция для генерации случайного имени
     string generateRandomFirstName() const
     {
-        const vector<string> firstNames = {"Никита", "Алексей", "Андрей", "Александр", "Дмитрий", "Даниил"};
+        const vector<string> firstNames = {"Никита", "Алексей", "Андрей",
+                                           "Александр", "Дмитрий", "Даниил"};
         return firstNames[rand() % firstNames.size()];
     }
     // Функция для генерации случайной фамилии
     string generateRandomMiddleName() const
     {
-        const vector<string> middlenames = {"Иванов", "Смирнов ", "Кузнецов", "Попов", "Васильев", "Петров", "Соколов", "Михайлов", "Новиков", "Федоров", "Морозов", "Волков", "Алексеев", "Лебедев", "Семенов", "Егоров", "Павлов", "Козлов", "Степанов", "Николаев"};
+        const vector<string> middlenames = {
+            "Иванов", "Смирнов ", "Кузнецов", "Попов", "Васильев", "Петров", "Соколов",
+            "Михайлов", "Новиков", "Федоров", "Морозов", "Волков", "Алексеев", "Лебедев",
+            "Семенов", "Егоров", "Павлов", "Козлов", "Степанов", "Николаев"};
         return middlenames[rand() % middlenames.size()];
     }
     // Функция для генерации случайного отчества
     string generateRandomLastName() const
     {
-        const vector<string> lastNames = {"Владимирович", "Александрович", "Николаевич", "Сергеевич", "Викторович", "Анатольевич", "Иванович", "Юрьевич", "Михайлович", "Алексеевич", "Петрович", "Станиславович", "Григорьевич", "Дмитриевич", "Никитич", "Станиславович", "Алексиевич", "Евгеньевич", "Тимофеевич", "Матвеевич"};
+        const vector<string> lastNames = {
+            "Владимирович", "Александрович", "Николаевич", "Сергеевич", "Викторович",
+            "Анатольевич", "Иванович", "Юрьевич", "Михайлович", "Алексеевич",
+            "Петрович", "Станиславович", "Григорьевич", "Дмитриевич", "Никитич",
+            "Станиславович", "Алексиевич", "Евгеньевич", "Тимофеевич", "Матвеевич"};
         return lastNames[rand() % lastNames.size()];
     }
     // Функция для генерации случайного названия компании
@@ -1923,7 +1791,9 @@ public:
     // Функция для генерации случайного города
     string generateRandomCity()
     {
-        const vector<string> cities = {"Москва", "Санкт-Петербург", "Новосибирск", "Екатеринбург", "Нижний Новгород", "Казань", "Челябинск", "Омск", "Ростов-на-Дону", "Уфа"};
+        const vector<string> cities = {
+            "Москва", "Санкт-Петербург", "Новосибирск", "Екатеринбург", "Нижний Новгород",
+            "Казань", "Челябинск", "Омск", "Ростов-на-Дону", "Уфа"};
         return cities[rand() % cities.size()];
     }
     // Функция для генерации случайной даты в диапазоне от сегодня до года вперед
@@ -1950,7 +1820,10 @@ public:
     // Функция для генерации случайной комнаты
     string generateRandomRoom()
     {
-        vector<string> rooms = {"Зал для совещаний", "Конференц-зал", "Студия", "Аудитория 12", "Лаунж зона", "Кабинета 4", "Выставочный зал", "Тренинговый центр", "Зал для презентаций", "Зал для банкетов"};
+        vector<string> rooms = {"Зал для совещаний", "Конференц-зал", "Студия",
+                                "Аудитория 12", "Лаунж зона", "Кабинета 4",
+                                "Выставочный зал", "Тренинговый центр", "Зал для презентаций",
+                                "Зал для банкетов"};
 
         int randomIndex = rand() % rooms.size();
         return rooms[rand() % rooms.size()];
@@ -2066,13 +1939,17 @@ public:
     }
 
     // ------------------------UI------------------------
-    bool inputSingleInt(int &digit, const int start, const int end);                                                              // ввод положительной цифры
-    bool inputString(string &str, const int &minLen = 2, const int &maxLen = 15, bool firstBigLetter = 1, bool allowNumbers = 0); // ввод строки
+    bool inputSingleInt(int &digit, const int start, const int end); // ввод положительной цифры
+    bool inputString(string &str, const int &minLen = 2, const int &maxLen = 15,
+                     bool firstBigLetter = 1, bool allowNumbers = 0); // ввод строки
     bool inputInt(int &number, const int &min = INT_MIN / 10, const int &max = INT_MAX / 10,
-                  const string &key = "NULL", const bool minus = 0, const bool point = 0); // ввод числа int
-    bool inputDouble(double &number, const double &min = __DBL_MIN__ / 10, const double &max = __DBL_MAX__ / 10,
-                     const string &key = "NULL", const bool minus = 0, const bool point = 1, int decimalLimit = 2); // ввод double
-    void clearConsole();                                                                                            // очистка консоли и вывод сообщения "нажмите esc чтобы выйти"
+                  const string &key = "NULL", const bool minus = 0,
+                  const bool point = 0); // ввод числа int
+    bool inputDouble(double &number, const double &min = __DBL_MIN__ / 10,
+                     const double &max = __DBL_MAX__ / 10, const string &key = "NULL",
+                     const bool minus = 0, const bool point = 1,
+                     int decimalLimit = 2); // ввод double
+    void clearConsole();                    // очистка консоли и вывод сообщения "нажмите esc чтобы выйти"
 
     // ------------------------MENU------------------------
     // меню создания компании
@@ -2236,19 +2113,18 @@ public:
         clearConsole();
         cout << "Сотрудники данной компании: \n\n";
 
-        cout << left << setw(3) << "№ |"
-             << setw(10) << "Должность|"
-             << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+        cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+             << "    Фамилия    |      Имя      |   Отчество    |"
              << "   Зарплата   |" << endl;
-        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
-        cout << left << setw(2) << 0
-             << setw(10) << "|" + toStringEnum(Position::Director)
-             << setw(16) << "|" + director.getMiddleName()
-             << setw(16) << "|" + director.getFirstName()
-             << setw(16) << "|" + director.getLastName()
-             << "|" << setw(9) << fixed << setprecision(2) << director.getSalary() << " руб.|" << endl;
-        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+        cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Director)
+             << setw(16) << "|" + director.getMiddleName() << setw(16)
+             << "|" + director.getFirstName() << setw(16) << "|" + director.getLastName() << "|"
+             << setw(9) << fixed << setprecision(2) << director.getSalary() << " руб.|" << endl;
+        cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 
         vector<Person *> employeeList;
         displayAllEmployees(director, employeeList);
@@ -2302,7 +2178,8 @@ public:
         vector<Department> departments;
         for (const auto &entry : departmentBudgets)
         {
-            cout << i++ << ". " << toStringEnum(entry.first) << " \t(Бюджет: " << entry.second << " руб.)\n";
+            cout << i++ << ". " << toStringEnum(entry.first) << " \t(Бюджет: " << entry.second
+                 << " руб.)\n";
             departments.push_back(entry.first); // Сохраняем отдел для выбора
         }
 
@@ -2318,9 +2195,11 @@ public:
         if (!inputDouble(newBudget, 0, 500000, "New Bonus", false, true))
             return false;
         clearConsole();
-        cout << "Прошлый бюджет " << toStringEnum(selectedDepartment) << " = " << departmentBudgets[selectedDepartment] << " руб." << endl;
+        cout << "Прошлый бюджет " << toStringEnum(selectedDepartment) << " = "
+             << departmentBudgets[selectedDepartment] << " руб." << endl;
         director.approveBudget(selectedDepartment, newBudget);
-        cout << "Нынешний бюджет " << toStringEnum(selectedDepartment) << " успешно изменен на " << newBudget << " руб.\n";
+        cout << "Нынешний бюджет " << toStringEnum(selectedDepartment) << " успешно изменен на "
+             << newBudget << " руб.\n";
         system("pause");
         return 1;
     }
@@ -2332,13 +2211,12 @@ public:
 
         vector<Person *> employees;
 
-        cout << left << setw(3) << "№ |"
-             << setw(10) << "Должность|"
-             << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+        cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+             << "    Фамилия    |      Имя      |   Отчество    |"
              << "   Зарплата   |" << setw(6) << "Ставка|" << endl;
         cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
-             << '+' << string(6, '-') << '+' << endl;
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+             << string(6, '-') << '+' << endl;
 
         displayAllEmployeesWithRates(director, accountant, employees);
 
@@ -2378,20 +2256,20 @@ public:
         clearConsole();
         cout << "Сотрудники и их премии:\n\n";
 
-        cout << left << setw(3) << "№ |"
-             << setw(10) << "Должность|"
-             << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+        cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+             << "    Фамилия    |      Имя      |   Отчество    |"
              << "   Зарплата   |" << "    Премии    |" << endl;
         cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-')
-             << '+' << string(14, '-') << '+' << endl;
+             << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+             << string(14, '-') << '+' << endl;
 
         // Выводим список сотрудников и их премий
         vector<Person *> currentEmployees;
 
         displayAllEmployeesWithBonuses(director, accountant, currentEmployees);
 
-        cout << "Бюджет выделенный на премии = " << fixed << setprecision(2) << director.getApprovedBudget().at(Department::Bonuses) << " руб. \n";
+        cout << "Бюджет выделенный на премии = " << fixed << setprecision(2)
+             << director.getApprovedBudget().at(Department::Bonuses) << " руб. \n";
 
         cout << "\nВыберите сотрудника, которому нужно изменить премию (введите номер): ";
         if (!inputInt(choice, 1, currentEmployees.size()))
@@ -2400,11 +2278,16 @@ public:
         clearConsole();
 
         // Получаем выбранного сотрудника
-        auto selectedEmployee = currentEmployees[choice - 1]; // Получаем указатель на выбранного сотрудника
+        auto selectedEmployee =
+            currentEmployees[choice - 1]; // Получаем указатель на выбранного сотрудника
 
         double newBonus;
-        cout << "Введите новую премию для работника " << selectedEmployee->getMiddleName() << " " << selectedEmployee->getFirstName() << ": ";
-        if (!inputDouble(newBonus, 0, director.getApprovedBudget()[Department::Bonuses] + accountant.getEmployeeBonus(selectedEmployee), "New Bonus", false, true))
+        cout << "Введите новую премию для работника " << selectedEmployee->getMiddleName() << " "
+             << selectedEmployee->getFirstName() << ": ";
+        if (!inputDouble(newBonus, 0,
+                         director.getApprovedBudget()[Department::Bonuses] +
+                             accountant.getEmployeeBonus(selectedEmployee),
+                         "New Bonus", false, true))
             return false;
 
         // Устанавливаем новую премию
@@ -2424,7 +2307,8 @@ public:
     bool setCoefficientMenu(Accountant &accountant, Director &director)
     {
         clearConsole();
-        SalaryDatabase &salaryDatabase = accountant.getSalaryDataBase(); // Получаем базу данных зарплат
+        SalaryDatabase &salaryDatabase =
+            accountant.getSalaryDataBase(); // Получаем базу данных зарплат
 
         cout << "Список должностей, их коэффициентов и ЗП:\n\n";
         const auto &coefficients = salaryDatabase.getSalaryCoefficients();
@@ -2448,9 +2332,11 @@ public:
 
         clearConsole();
 
-        cout << "Введите новый коэффициент для должности " << toStringEnum(selectedPosition) << ": ";
+        cout << "Введите новый коэффициент для должности " << toStringEnum(selectedPosition)
+             << ": ";
         double newCoefficient;
-        if (!inputDouble(newCoefficient, 0.1, 5, "null", false, true)) // Пример диапазона от 0.1 до 10
+        if (!inputDouble(newCoefficient, 0.1, 5, "null", false,
+                         true)) // Пример диапазона от 0.1 до 10
             return false;
 
         // Устанавливаем новый коэффициент через метод SalaryDatabase
@@ -2458,8 +2344,8 @@ public:
         {
             clearConsole();
             salaryDatabase.setCoefficient(selectedPosition, newCoefficient, director);
-            cout << "Коэффициент для должности " << toStringEnum(selectedPosition) << " успешно изменен на "
-                 << newCoefficient << ".\n";
+            cout << "Коэффициент для должности " << toStringEnum(selectedPosition)
+                 << " успешно изменен на " << newCoefficient << ".\n";
         }
         catch (const invalid_argument &e)
         {
@@ -2587,21 +2473,25 @@ public:
 
         clearConsole();
 
-        if (find(licenseCategories.begin(), licenseCategories.end(), DriverLicense(choice - 1)) == licenseCategories.end())
+        if (find(licenseCategories.begin(), licenseCategories.end(), DriverLicense(choice - 1)) ==
+            licenseCategories.end())
         {
             driver.addLicenseCategory(DriverLicense(choice - 1));
             cout << "Категория " << toStringEnum(DriverLicense(choice - 1)) << " добавлена.\n";
         }
         else
         {
-            driver.getLicenseCategories().erase(find(licenseCategories.begin(), licenseCategories.end(), DriverLicense(choice - 1)));
-            vector<VehicleType> &vehicles = driver.getVehicles(); // Ссылка на транспортные средства водителя
+            driver.getLicenseCategories().erase(find(
+                licenseCategories.begin(), licenseCategories.end(), DriverLicense(choice - 1)));
+            vector<VehicleType> &vehicles =
+                driver.getVehicles(); // Ссылка на транспортные средства водителя
             cout << "Категория " << toStringEnum(DriverLicense(choice - 1)) << " удалена.\n";
             auto vehicleIt = find(vehicles.begin(), vehicles.end(), VehicleType(choice - 1));
             if (vehicleIt != vehicles.end())
             {
                 vehicles.erase(vehicleIt);
-                cout << "Транспортное средство " << toStringEnum(VehicleType(choice - 1)) << " удалено.\n";
+                cout << "Транспортное средство " << toStringEnum(VehicleType(choice - 1))
+                     << " удалено.\n";
             }
         }
         system("pause");
@@ -2637,7 +2527,8 @@ public:
             return 0;
 
         VehicleType selectedVehicle = currentLC[choice - 1];
-        vector<VehicleType> &vehicles = driver.getVehicles(); // Ссылка на транспортные средства водителя
+        vector<VehicleType> &vehicles =
+            driver.getVehicles(); // Ссылка на транспортные средства водителя
 
         clearConsole();
 
@@ -2704,11 +2595,12 @@ public:
             clearConsole();
             vector<Person *> vect;
 
-            cout << left << setw(3) << "№ |"
-                 << setw(10) << "Должность|"
-                 << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+            cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+                 << "    Фамилия    |      Имя      |   Отчество    |"
                  << "  Зарплата   |" << endl;
-            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+' << endl;
+            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                 << string(15, '-') << '+' << string(15, '-') << '+' << string(13, '-') << '+'
+                 << endl;
 
             displayAllEmployees(director, vect);
             system("pause");
@@ -2792,11 +2684,12 @@ public:
         case 2: // Вывести сотрудников, данного директора
             clearConsole();
 
-            cout << left << setw(3) << "№ |"
-                 << setw(10) << "Должность|"
-                 << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+            cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+                 << "    Фамилия    |      Имя      |   Отчество    |"
                  << "   Зарплата   |" << endl;
-            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                 << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+                 << endl;
 
             secretary->displayEmployeeListInTable(director.getEmployees());
             system("pause");
@@ -2805,11 +2698,12 @@ public:
             securityOrDriver.clear();
             clearConsole();
 
-            cout << left << setw(3) << "№ |"
-                 << setw(10) << "Должность|"
-                 << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+            cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+                 << "    Фамилия    |      Имя      |   Отчество    |"
                  << "   Зарплата   |" << endl;
-            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                 << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+                 << endl;
 
             for (const auto pair : director.getEmployees())
             {
@@ -2830,11 +2724,12 @@ public:
             securityOrDriver.clear();
             clearConsole();
 
-            cout << left << setw(3) << "№ |"
-                 << setw(10) << "Должность|"
-                 << setw(45) << "    Фамилия    |      Имя      |   Отчество    |"
+            cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
+                 << "    Фамилия    |      Имя      |   Отчество    |"
                  << "   Зарплата   |" << endl;
-            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
+            cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
+                 << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+'
+                 << endl;
 
             for (const auto pair : director.getEmployees())
             {
@@ -3089,7 +2984,8 @@ bool Menu::inputSingleInt(int &digit, const int start, const int end) // вво�
     }
 }
 
-bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool firstBigLetter, bool allowNumbers) // ввод строки
+bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool firstBigLetter,
+                       bool allowNumbers) // ввод строки
 {
     wchar_t ch;
     while (true)
@@ -3115,7 +3011,8 @@ bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool f
         if (int(ch) != 13 && int(ch) != 9 && int(ch) != 8 && str.length() < maxLen)
         {
             // Проверка на дефис: разрешен, если не первый символ и предыдущий символ не '-'
-            if (ch == '-' && !str.empty() && str.back() != '-' && str.length() != maxLen - 1 && str.find('-') == string::npos)
+            if (ch == '-' && !str.empty() && str.back() != '-' && str.length() != maxLen - 1 &&
+                str.find('-') == string::npos)
             {
                 str += char(ch);
                 cout << char(ch);
@@ -3144,7 +3041,8 @@ bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool f
     }
 }
 
-bool Menu::inputInt(int &number, const int &min, const int &max, const string &key, const bool minus, const bool point)
+bool Menu::inputInt(int &number, const int &min, const int &max, const string &key,
+                    const bool minus, const bool point)
 {
     string ans = "";
     char ch;
@@ -3158,7 +3056,8 @@ bool Menu::inputInt(int &number, const int &min, const int &max, const string &k
             ans.append("-");
             cout << '-';
         }
-        if (int(ch) == 13 && !ans.empty() && stoi(ans) >= min && (!ans.empty() && !(ans.length() == 1 && ans[0] == '-'))) // enter
+        if (int(ch) == 13 && !ans.empty() && stoi(ans) >= min &&
+            (!ans.empty() && !(ans.length() == 1 && ans[0] == '-'))) // enter
             break;
         if (int(ch) == 9 && key == "Tab")
         {
@@ -3181,7 +3080,8 @@ bool Menu::inputInt(int &number, const int &min, const int &max, const string &k
     return 1;
 }
 
-bool Menu::inputDouble(double &number, const double &min, const double &max, const string &key, const bool minus, const bool point, int decimalLimit)
+bool Menu::inputDouble(double &number, const double &min, const double &max, const string &key,
+                       const bool minus, const bool point, int decimalLimit)
 {
     string ans = "";
     char ch;
