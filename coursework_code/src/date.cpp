@@ -81,8 +81,8 @@ bool Date::operator==(const Date &other) const
 // Вспомогательный метод для проверки года
 void Date::validateYear(const int &_year)
 {
-    if (_year < 1970 || _year > 2025)
-        throw std::invalid_argument("Неверно задан год");
+    if (_year < 1970 || _year > 2026)
+        throw std::invalid_argument("Неверно задан год " + std::to_string(_year));
 }
 
 // Вспомогательный метод для проверки месяца
