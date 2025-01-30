@@ -1,4 +1,4 @@
-#include "SecurityGuard.h"
+#include "classes/SecurityGuard.h"
 #include "utils/enum_to_string.h"
 #include <iostream>
 #include <iomanip>
@@ -71,9 +71,9 @@ void SecurityGuard::generateIncidentReport() const
     cout << "Отдел\t\tСтатус\n";
     cout << "--------------------------------------------------------\n";
     int i = 0;
-    for (const auto &location : locations)
+    for (const auto &location : departments)
     {
-        cout << ++i << ") " << location.first << "\t" << location.second << endl;
+        cout << ++i << ") " << location << "\t" << locations.at(location) << endl;
     }
 }
 void SecurityGuard::setSpecialEquipment(const Equipment equipment) { specialEquipment = equipment; }

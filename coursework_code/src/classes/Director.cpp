@@ -1,7 +1,7 @@
-#include "Director.h"
+#include "classes/Director.h"
 #include <iostream>
-#include <utils/enum_to_string.h>
-#include "SalaryDatabase.h"
+#include "utils/enum_to_string.h"
+#include "classes/SalaryDatabase.h"
 
 using namespace app;
 

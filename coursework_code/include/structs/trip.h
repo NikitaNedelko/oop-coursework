@@ -1,7 +1,7 @@
 #ifndef TRIP_H
 #define TRIP_H
 
-#include "date.h"
+#include "classes/Date.h"
 
 // информация о поездке
 struct Trip

@@ -1,4 +1,4 @@
-#include "Company.h"
+#include "classes/Company.h"
 
 using namespace std;
 

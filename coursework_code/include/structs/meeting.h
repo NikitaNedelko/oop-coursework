@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <string>
-#include "person.h"
-#include "date.h"
+#include "classes/Person.h"
+#include "classes/Date.h"
 
 // информация о встрече
 struct Meeting
