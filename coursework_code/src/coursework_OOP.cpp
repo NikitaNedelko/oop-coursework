@@ -1,5 +1,5 @@
-#include <iostream>
 #include "classes/Menu.h"
+#include "CommonHeaders.h"
 
 using namespace std;
 
@@ -11,9 +11,9 @@ int main()
         ;
     while (menu.CompanyMenu())
         ;
-    system("cls");
+    ClearScreen();
     cout << "Завершения выполнения программы \n";
 
-    system("pause");
+    Pause();
     return 0;
 }

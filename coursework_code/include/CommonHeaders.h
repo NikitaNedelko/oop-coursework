@@ -8,5 +8,6 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "utils/console_utils.h"
 
 #endif // COMMON_HEADERS_H
