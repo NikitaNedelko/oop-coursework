@@ -16,6 +16,7 @@
 #include "Date.h"
 #include "Director.h"
 #include "SalaryDatabase.h"
+#include "SecurityGuard.h"
 
 using namespace std;
 using namespace app;
@@ -338,99 +339,6 @@ void Secretary::displayInfo() const
          << " руб.|" << endl;
     cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
          << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
-}
-
-// класс SecurityGuard, наследуемый от Person
-class SecurityGuard : public Person
-{
-private:
-    PersonalData personalData;
-
-    map<string, string> locations; // Место -> Статус проверки
-    Equipment specialEquipment;    // Название спецсредства (дубинка, шокер и т.д.)
-
-    // Список всех объектов
-    vector<string> departments = {"Склад", "Производство", "Администрация", "Лаборатория"};
-    // Список возможных статусов
-    vector<string> statuses = {"Всё в порядке", "Нужна проверка", "Нарушение безопасности",
-                               "Неизвестный статус"};
-
-public:
-    SecurityGuard(const PersonalData &personalData, const Equipment &equipment)
-        : specialEquipment(equipment)
-    {
-        setFirstName(personalData.firstName);
-        setMiddleName(personalData.middleName);
-        setLastName(personalData.lastName);
-        specialEquipment = Equipment::Flashlight;
-        for (string dep : departments)
-        {
-            locations[dep] = "Нужна проверка";
-        }
-    }
-    // Геттеры и сеттеры для полей Human
-    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
-
-    string getFirstName() const override { return personalData.firstName; }
-
-    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
-
-    string getLastName() const override { return personalData.lastName; }
-
-    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
-
-    string getMiddleName() const override { return personalData.middleName; }
-
-    void setSalary(double salary) override { personalData.salary = salary; }
-
-    double getSalary() const override { return personalData.salary; }
-
-    // методы проверки безопасности и составления отчетов об инцидентах
-    void setSecurityStatus(string &department,
-                           string &status); // Метод для изменения статуса безопасности
-    void generateIncidentReport() const;    // Метод для генерации отчета о безопасности
-    void setSpecialEquipment(const Equipment equipment);
-    Equipment getSpecialEquipment() const;
-    vector<string> allDepartments(); // все объекты
-    vector<string> allStatuses();    // все статусы
-    void displayInfo() const;        // вся информация о классе
-};
-
-vector<string> SecurityGuard::allDepartments() { return departments; }
-vector<string> SecurityGuard::allStatuses() { return statuses; }
-void SecurityGuard::setSecurityStatus(string &department, string &status)
-{
-    locations[department] = status;
-}
-void SecurityGuard::generateIncidentReport() const
-{
-    cout << "\nОтчет о безопасности:\n";
-    cout << "Отдел\t\tСтатус\n";
-    cout << "--------------------------------------------------------\n";
-    int i = 0;
-    for (const auto &location : locations)
-    {
-        cout << ++i << ") " << location.first << "\t" << location.second << endl;
-    }
-}
-void SecurityGuard::setSpecialEquipment(const Equipment equipment) { specialEquipment = equipment; }
-Equipment SecurityGuard::getSpecialEquipment() const { return specialEquipment; }
-void SecurityGuard::displayInfo() const
-{
-    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
-         << "    Фамилия    |      Имя      |   Отчество    |"
-         << "   Зарплата   |" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
-
-    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::SecurityGuard)
-         << setw(16) << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
-         << "|" + getLastName() << "|" << setw(9) << fixed << setprecision(2) << getSalary()
-         << " руб.|" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
-
-    cout << "Спец средство: " << toStringEnum(getSpecialEquipment());
 }
 
 // класс Driver, наследуемый от Person
