@@ -17,6 +17,7 @@
 #include "Director.h"
 #include "SalaryDatabase.h"
 #include "SecurityGuard.h"
+#include "Driver.h"
 
 using namespace std;
 using namespace app;
@@ -341,113 +342,7 @@ void Secretary::displayInfo() const
          << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
 }
 
-// класс Driver, наследуемый от Person
-class Driver : public Person
-{
-private:
-    PersonalData personalData;
-
-    string destination;
-    vector<DriverLicense> licenseCategories; // Массив категорий прав (например, A, B, C)
-    vector<VehicleType> vehicles;            // Массив транспортных средств, которыми управляет водитель
-    vector<string> cities;
-
-public:
-    Driver(const PersonalData &personalData, DriverLicense licenseCategories,
-           VehicleType vehicles)
-    {
-        setFirstName(personalData.firstName);
-        setMiddleName(personalData.middleName);
-        setLastName(personalData.lastName);
-        addLicenseCategory(licenseCategories);
-        addVehicle(vehicles);
-        destination = "Не задано";
-        cities = {"Москва", "Санкт-Петербург",
-                  "Нижний Новгород", "Казань",
-                  "Челябинск", "Омск",
-                  "Ростов-на-Дону", "Уфа",
-                  "Не задано"};
-    }
-    // Геттеры и сеттеры для полей Human
-    void setFirstName(const string &firstName) override { personalData.firstName = firstName; }
-
-    string getFirstName() const override { return personalData.firstName; }
-
-    void setLastName(const string &lastName) override { personalData.lastName = lastName; }
-
-    string getLastName() const override { return personalData.lastName; }
-
-    void setMiddleName(const string &middleName) override { personalData.middleName = middleName; }
-
-    string getMiddleName() const override { return personalData.middleName; }
-
-    void setSalary(double salary) override { personalData.salary = salary; }
-
-    double getSalary() const override { return personalData.salary; }
-
-    void changeDestination(const string &newDestination); // новое место назначение
-    const vector<string> getCities();                     // список городов (доступных мест назначений)
-    void addLicenseCategory(
-        const DriverLicense &category); // Метод для добавления категории водительских прав
-    vector<DriverLicense> &
-    getLicenseCategories();                      // Метод для получения категории водительских прав
-    void addVehicle(const VehicleType &vehicle); // Метод для добавления транспортного средства
-    vector<VehicleType> &getVehicles();          // Метод вывода всех транспортных средств
-    void displayInfo() const;                    // отображение всей информации класса
-};
-
-void Driver::addLicenseCategory(const DriverLicense &category)
-{
-    licenseCategories.push_back(category);
-}
-void Driver::addVehicle(const VehicleType &vehicle) { vehicles.push_back(vehicle); }
-void Driver::changeDestination(const string &newDestination) { destination = newDestination; }
-vector<DriverLicense> &Driver::getLicenseCategories() { return licenseCategories; }
-vector<VehicleType> &Driver::getVehicles() { return vehicles; }
-void Driver::displayInfo() const
-{
-    cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
-         << "    Фамилия    |      Имя      |   Отчество    |"
-         << "   Зарплата   |" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
-
-    cout << left << setw(2) << 0 << setw(10) << "|" + toStringEnum(Position::Driver) << setw(16)
-         << "|" + getMiddleName() << setw(16) << "|" + getFirstName() << setw(16)
-         << "|" + getLastName() << "|" << setw(9) << fixed << setprecision(2) << getSalary()
-         << " руб.|" << endl;
-    cout << string(2, '-') << '+' << string(9, '-') << '+' << string(15, '-') << '+'
-         << string(15, '-') << '+' << string(15, '-') << '+' << string(14, '-') << '+' << endl;
-
-    if (!licenseCategories.empty())
-    {
-        cout << "Имеющиеся категории прав : ";
-        for (DriverLicense dl : licenseCategories)
-        {
-            cout << toStringEnum(dl) << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-
-    if (!vehicles.empty())
-    {
-        cout << "Имеющиеся транспортные средства : ";
-        for (VehicleType vt : vehicles)
-        {
-            cout << toStringEnum(vt) << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-
-    cout << "Выехал в город - " << destination;
-    cout << endl;
-}
-const vector<string> Driver::getCities() { return cities; }
-
-Position Accountant::getEmployeeType(
-    Person *employee) // определяем что за работник относительно Person *
+Position Accountant::getEmployeeType(Person *employee) // определяем что за работник относительно Person *
 {
     if (dynamic_cast<Driver *>(employee))
         return Position::Driver;
@@ -1338,6 +1233,7 @@ public:
         secretary->scheduleMeeting(emp2, generateRandomRoom(), generateRandomDate());
 
         accountant->updateEmployeesRate(director);
+        system("pause");
         return Company(generateRandomCompanyName(), director);
     }
 
