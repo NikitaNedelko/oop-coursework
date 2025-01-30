@@ -20,38 +20,10 @@
 #include "Driver.h"
 #include "Secretary.h"
 #include "Accountant.h"
+#include "Company.h"
 
 using namespace std;
 using namespace app;
-
-class Company // класс для управления компанией
-{
-private:
-    string name;       // название компании
-    Director director; // директор который привязан к компании
-
-public:
-    // создание компании
-    Company() : name("NULL") {}
-    Company(const string &name, Director director) : name(name), director(director) {}
-
-    // методы для управления компанией и директором
-    Director &getDirector();
-    void displayInfo() const;
-    void setName(string name);
-    string getName() const;
-};
-
-Director &Company::getDirector() { return director; }
-
-void Company::displayInfo() const
-{
-    cout << "Название компании: " << name << endl;
-    cout << "Директор: " << director.getFirstName() << " " << director.getLastName() << endl;
-    cout << "Зарплата: " << director.getSalary() << " руб." << endl;
-}
-void Company::setName(string name) { this->name = name; }
-string Company::getName() const { return name; }
 
 // ------------------------MENU------------------------
 
@@ -1950,8 +1922,7 @@ bool Menu::inputSingleInt(int &digit, const int start, const int end) // вво�
     }
 }
 
-bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool firstBigLetter,
-                       bool allowNumbers) // ввод строки
+bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool firstBigLetter, bool allowNumbers) // ввод строки
 {
     wchar_t ch;
     while (true)
@@ -2007,8 +1978,7 @@ bool Menu::inputString(string &str, const int &minLen, const int &maxLen, bool f
     }
 }
 
-bool Menu::inputInt(int &number, const int &min, const int &max, const string &key,
-                    const bool minus, const bool point)
+bool Menu::inputInt(int &number, const int &min, const int &max, const string &key, const bool minus, const bool point)
 {
     string ans = "";
     char ch;
@@ -2046,8 +2016,7 @@ bool Menu::inputInt(int &number, const int &min, const int &max, const string &k
     return 1;
 }
 
-bool Menu::inputDouble(double &number, const double &min, const double &max, const string &key,
-                       const bool minus, const bool point, int decimalLimit)
+bool Menu::inputDouble(double &number, const double &min, const double &max, const string &key, const bool minus, const bool point, int decimalLimit)
 {
     string ans = "";
     char ch;
