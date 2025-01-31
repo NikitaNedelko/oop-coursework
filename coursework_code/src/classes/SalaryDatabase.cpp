@@ -1,6 +1,5 @@
 #include "classes/SalaryDatabase.h"
 #include "classes/Director.h"
-#include <iostream>
 
 SalaryDatabase::SalaryDatabase() : minimumWage(19242)
 {

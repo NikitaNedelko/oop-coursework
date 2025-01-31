@@ -1,5 +1,4 @@
 #include "classes/Director.h"
-#include <iostream>
 #include "utils/enum_to_string.h"
 #include "classes/SalaryDatabase.h"
 

@@ -1,6 +1,5 @@
 #include "classes/Date.h"
-#include <ctime>   // Для time и localtime
-#include <iomanip> // Для setw и setfill
+#include "CommonHeaders.h"
 
 // Конструктор по умолчанию
 Date::Date()

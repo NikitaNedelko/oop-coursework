@@ -6,8 +6,8 @@
 #include "classes/Secretary.h"
 #include "enums/position.h"
 #include "utils/enum_to_string.h"
-#include <iostream>
-#include <iomanip>
+
+#include "CommonHeaders.h"
 
 using namespace std;
 using namespace app;

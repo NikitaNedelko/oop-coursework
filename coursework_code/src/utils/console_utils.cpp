@@ -24,10 +24,10 @@ void ClearScreen()
 void Pause()
 {
 #ifdef _WIN32
-    std::cout << "Нажмите любую клавишу для продолжения...";
+    std::cout << "\nНажмите любую клавишу для продолжения...";
     _getch();
 #else
-    std::cout << "Нажмите Enter для продолжения...";
+    std::cout << "\nНажмите Enter для продолжения...";
     std::cin.get();
 #endif
 }

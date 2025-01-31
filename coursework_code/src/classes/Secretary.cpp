@@ -1,4 +1,5 @@
 #include "classes/Secretary.h"
+#include "CommonHeaders.h"
 
 using namespace std;
 using namespace app;
@@ -74,10 +75,10 @@ void Secretary::scheduleMeeting(vector<Person *> employees, const string &place,
                 if (find(meeting.employees.begin(), meeting.employees.end(), employee) !=
                     meeting.employees.end())
                 {
-                    system("cls");
+                    ClearScreen();
                     cout << "Сотрудник " << employee->getMiddleName() << " "
                          << employee->getFirstName() << " уже занят на встрече в это время.\n";
-                    system("pause");
+                    Pause();
                     return;
                 }
             }

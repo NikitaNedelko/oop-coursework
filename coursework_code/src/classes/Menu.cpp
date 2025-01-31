@@ -1,4 +1,5 @@
 #include "classes/Menu.h"
+#include "CommonHeaders.h"
 
 // получение типа сотрудника по объекту Person *
 Position Menu::getEmployeeType(Person *employee)
@@ -316,7 +317,7 @@ bool Menu::deleteCompany(Company &companyToRemove)
         }
     }
 
-    system("pause");
+    Pause();
     return 0;
 }
 // изменение ФМО сотрудника
@@ -403,14 +404,14 @@ bool Menu::hireEmployeeMenu(Director &director)
         Accountant *acc = dynamic_cast<Accountant *>(director.findAccountant());
         if (acc != nullptr)
             acc->updateEmployeesRate(director);
-        system("pause");
+        Pause();
         return true;
     }
     catch (const invalid_argument &e)
     {
         cout << "Ошибка при найме сотрудника: " << e.what() << endl;
         delete newEmployee; // Освобождаем память, если сотрудник не был нанят
-        system("pause");
+        Pause();
         return false;
     }
 }
@@ -426,7 +427,7 @@ bool Menu::terminateEmployeeMenu(Director &director)
     if (employees.empty())
     {
         cout << "Нет сотрудников для увольнения.\n";
-        system("pause");
+        Pause();
         return false;
     }
 
@@ -455,7 +456,7 @@ bool Menu::terminateEmployeeMenu(Director &director)
     {
         clearConsole();
         director.terminateEmployee(employeeToFire); // Удаление сотрудника из map в директоре
-        system("pause");
+        Pause();
         return true;
     }
     catch (const exception &e)
@@ -513,7 +514,7 @@ bool Menu::createMeeting(Secretary &secretary, Director &director)
         if (selectedEmployeeNumbers.size() == employees.size())
         {
             cout << "все сотрудники добавлены на встречу";
-            system("pause");
+            Pause();
             break;
         }
         cout << left << setw(3) << "№ |" << setw(10) << "Должность|" << setw(45)
@@ -580,7 +581,7 @@ bool Menu::getParticipantOfMeeting(Secretary &secretary)
     if (listOfMeeting.empty())
     {
         cout << "Список встреч пуст\n";
-        system("pause");
+        Pause();
         return 0;
     }
     secretary.displayMeetings();
@@ -596,7 +597,7 @@ bool Menu::getParticipantOfMeeting(Secretary &secretary)
             secretary.participantsOfMeeting(meeting);
         i++;
     }
-    system("pause");
+    Pause();
     return 0;
 }
 // выбор встречи для удаление
@@ -607,7 +608,7 @@ bool Menu::deleteMeeting(Secretary &secretary)
     if (listOfMeeting.empty())
     {
         cout << "Список встреч пуст\n";
-        system("pause");
+        Pause();
         return 0;
     }
     secretary.displayMeetings();
@@ -624,7 +625,7 @@ bool Menu::deleteMeeting(Secretary &secretary)
         i++;
     }
     cout << "Встреча успешно удалена\n";
-    system("pause");
+    Pause();
     return 0;
 }
 // ------------------------RANDOM------------------------
@@ -814,7 +815,7 @@ Company Menu::createCompanyRandom()
     secretary->scheduleMeeting(emp2, generateRandomRoom(), generateRandomDate());
 
     accountant->updateEmployeesRate(director);
-    // system("pause");
+    // Pause();
     return Company(generateRandomCompanyName(), director);
 }
 
@@ -1143,7 +1144,7 @@ bool Menu::inputDouble(double &number, const double &min, const double &max, con
 
 void Menu::clearConsole() // очистка консоли и вывод сообщения "нажмите esc чтобы выйти"
 {
-    system("cls");
+    ClearScreen();
     cout << "нажмите esc чтобы выйти" << '\n'
          << '\n';
 }
@@ -1181,7 +1182,7 @@ bool Menu::createCompanyMenu()
         catch (const invalid_argument &e)
         {
             cout << "ОШИБКА: " << e.what() << endl;
-            system("pause");
+            Pause();
         }
         break;
     default:
@@ -1214,9 +1215,9 @@ bool Menu::CompanyMenu()
         }
         catch (const invalid_argument &e)
         {
-            system("cls");
+            ClearScreen();
             cerr << "ОШИБКА: " << e.what() << '\n';
-            system("pause");
+            Pause();
         }
         break;
     case 2:
@@ -1236,7 +1237,7 @@ bool Menu::manageCompaniesMenu()
     if (companies.empty()) // Список компаний пуст
     {
         cout << "Список компаний пуст \n";
-        system("pause");
+        Pause();
         return 0;
     }
 
@@ -1264,9 +1265,9 @@ bool Menu::manageCompaniesMenu()
     }
     catch (const invalid_argument &e)
     {
-        system("cls");
+        ClearScreen();
         cerr << "ОШИБКА: " << e.what() << '\n';
-        system("pause");
+        Pause();
         return 1;
     }
 }
@@ -1290,7 +1291,7 @@ bool Menu::workWithCompany(Company &company)
 
         while (changeNameCompany(company))
             ;
-        system("pause");
+        Pause();
         return 1;
     case 2: // Перейти к управлению работников компании
         while (manageEmployeesMenu(company.getDirector()))
@@ -1357,9 +1358,9 @@ bool Menu::manageEmployeesMenu(Director &director)
     }
     catch (const invalid_argument &e)
     {
-        system("cls");
+        ClearScreen();
         cout << e.what();
-        system("pause");
+        Pause();
     }
     return 1;
 }
@@ -1398,7 +1399,7 @@ bool Menu::manageBudgetDepartmentsMenu(Director &director)
     director.approveBudget(selectedDepartment, newBudget);
     cout << "Нынешний бюджет " << toStringEnum(selectedDepartment) << " успешно изменен на "
          << newBudget << " руб.\n";
-    system("pause");
+    Pause();
     return 1;
 }
 // изменение ставок сотрудников
@@ -1445,7 +1446,7 @@ bool Menu::setEmployeesRatesMenu(Accountant &accountant, Director &director)
     clearConsole();
     // Обновление ставки сотрудника через бухгалтера
     accountant.setRate(selectedEmployee, newRate, director);
-    system("pause");
+    Pause();
     return true;
 }
 // изменение ставок сотрудников
@@ -1498,7 +1499,7 @@ bool Menu::setEmployeesBonusesMenu(Accountant &accountant, Director &director)
     {
         cout << e.what();
     }
-    system("pause");
+    Pause();
     return true;
 }
 // изменение коэффициента должности
@@ -1549,7 +1550,7 @@ bool Menu::setCoefficientMenu(Accountant &accountant, Director &director)
     {
         cout << e.what();
     }
-    system("pause");
+    Pause();
     return true;
 }
 // меню управления встречами
@@ -1572,7 +1573,7 @@ bool Menu::meetingManageMenu(Secretary &secretary, Director &director)
 
         while (createMeeting(secretary, director))
             ;
-        system("pause");
+        Pause();
         return 1;
     case 2: // Вывести участников встречи
         while (getParticipantOfMeeting(secretary))
@@ -1615,7 +1616,7 @@ bool Menu::manageStatusLocationsMenu(SecurityGuard &securityGuard)
     // Сохранение статуса и комментария для выбранного отдела
     securityGuard.setSecurityStatus(selectedDepartment, statuses[choice - 1]);
     cout << "Статус для отдела " << selectedDepartment << " успешно обновлен.\n";
-    system("pause");
+    Pause();
     return 1;
 }
 // меню изменения спец средств
@@ -1651,7 +1652,7 @@ bool Menu::manageDriverDestinationMenu(Driver &driver)
 
     clearConsole();
     cout << "Место назначение задано\n";
-    system("pause");
+    Pause();
     return 1;
 }
 // меню добавления/удаление водительских прав
@@ -1692,7 +1693,7 @@ bool Menu::manageDriverLicenseCategoriesMenu(Driver &driver)
                  << " удалено.\n";
         }
     }
-    system("pause");
+    Pause();
     return 1;
 }
 // меню добавления/удаление транспорта
@@ -1705,7 +1706,7 @@ bool Menu::manageDriverVehiclesMenu(Driver &driver)
     if (licenseCategories.empty())
     {
         cout << "У водителя нет прав\n";
-        system("pause");
+        Pause();
         return 0;
     }
 
@@ -1744,7 +1745,7 @@ bool Menu::manageDriverVehiclesMenu(Driver &driver)
         cout << "Транспортное средство " << toStringEnum(selectedVehicle) << " удалено.\n";
     }
 
-    system("pause");
+    Pause();
     return 1;
 }
 
@@ -1781,7 +1782,7 @@ bool Menu::manageEmployeeMenu(Director &director)
             clearConsole();
             cout << "Ошибка при найме сотрудника: " << e.what() << endl;
 
-            system("pause");
+            Pause();
         }
         return 1;
     case 3: // уволить работника
@@ -1801,7 +1802,7 @@ bool Menu::manageEmployeeMenu(Director &director)
              << endl;
 
         displayAllEmployees(director, vect);
-        system("pause");
+        Pause();
         return 1;
     }
     case 5: // Управление бюджетом отделов
@@ -1848,7 +1849,7 @@ bool Menu::manageEmployeeMenu(Accountant *accountant, Director &director)
         return 1;
     case 5: // Вывести информацию о всех работниках
         displayAllEmployeesWithRatesAndBonuses(director, *accountant);
-        system("pause");
+        Pause();
         return 1;
     default:
         return 1;
@@ -1890,7 +1891,7 @@ bool Menu::manageEmployeeMenu(Secretary *secretary, Director &director)
              << endl;
 
         secretary->displayEmployeeListInTable(director.getEmployees());
-        system("pause");
+        Pause();
         return 1;
     case 3: // Вывести данные об охранниках
         securityOrDriver.clear();
@@ -1912,11 +1913,11 @@ bool Menu::manageEmployeeMenu(Secretary *secretary, Director &director)
         {
             clearConsole();
             cout << "Сотрудников нет\n";
-            system("pause");
+            Pause();
             return 1;
         }
         secretary->displayEmployeeListInTable(securityOrDriver);
-        system("pause");
+        Pause();
         return 1;
     case 4: // Вывести данные о водителях
         securityOrDriver.clear();
@@ -1938,11 +1939,11 @@ bool Menu::manageEmployeeMenu(Secretary *secretary, Director &director)
         {
             clearConsole();
             cout << "Сотрудников нет\n";
-            system("pause");
+            Pause();
             return 1;
         }
         secretary->displayEmployeeListInTable(securityOrDriver);
-        system("pause");
+        Pause();
         return 1;
     case 5: // Управление встречами
         while (meetingManageMenu(*secretary, director))
@@ -1982,7 +1983,7 @@ bool Menu::manageEmployeeMenu(SecurityGuard *securityGuard)
         clearConsole();
         while (manageStatusLocationsMenu(*securityGuard))
             ;
-        system("pause");
+        Pause();
         return 1;
     default:
         return 1;
@@ -2019,13 +2020,13 @@ bool Menu::manageEmployeeMenu(Driver *driver)
         clearConsole();
         while (manageDriverVehiclesMenu(*driver))
             ;
-        system("pause");
+        Pause();
         return 1;
     case 4: // Отправить водителя в путешествие
         clearConsole();
         while (manageDriverDestinationMenu(*driver))
             ;
-        system("pause");
+        Pause();
         return 1;
     default:
         return 1;
